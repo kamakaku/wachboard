@@ -353,7 +353,7 @@ export default async function EditShiftPage({
         </Card>
 
         <ShiftAssignmentComplete
-          vehicles={vehicleList}
+          vehicles={vehicleList as any}
           people={people || []}
           initialAssignments={existingAssignments}
           initialCopiedTrupps={existingCopiedTrupps}
