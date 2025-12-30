@@ -128,7 +128,8 @@ export default async function EditShiftPage({
     .from("vehicle_configs")
     .select("*")
     .eq("station_id", membership.station_id)
-    .order("order", { ascending: true });
+    .order("order", { ascending: true })
+    .returns<VehicleConfigRow[]>();
 
   // Get people
   const { data: people } = await supabase
