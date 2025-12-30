@@ -43,7 +43,7 @@ async function runMigration() {
       label: testLabel,
       start_time: "07:00",
       end_time: "19:00",
-    });
+    } as any);
 
   // Clean up test template
   if (!error) {
