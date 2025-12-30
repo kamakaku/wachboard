@@ -36,7 +36,11 @@ export default async function NewShiftPage({
     .from("memberships")
     .select("station_id, role, division_ids")
     .eq("user_id", user.id)
-    .single();
+    .single<{
+      station_id: string;
+      role: "ADMIN" | "EDITOR" | "VIEWER";
+      division_ids: string[] | null;
+    }>();
 
   if (!membership || !["ADMIN", "EDITOR"].includes(membership.role)) {
     return (
