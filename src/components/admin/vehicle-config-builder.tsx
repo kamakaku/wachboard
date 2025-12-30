@@ -56,13 +56,13 @@ export function VehicleConfigBuilder({
   const [editingSlotIndex, setEditingSlotIndex] = useState<number | null>(null);
   const [editSlotValue, setEditSlotValue] = useState("");
   const [globalAllowsPraktikant, setGlobalAllowsPraktikant] = useState(
-    initialConfig?.allowsPraktikant ?? false
+    (initialConfig as any)?.allowsPraktikant ?? false
   );
   const [hasNotarztPool, setHasNotarztPool] = useState(
-    initialConfig?.hasNotarztPool ?? false
+    (initialConfig as any)?.hasNotarztPool ?? false
   );
   const [hasFuehrungsdienstPool, setHasFuehrungsdienstPool] = useState(
-    initialConfig?.hasFuehrungsdienstPool ?? false
+    (initialConfig as any)?.hasFuehrungsdienstPool ?? false
   );
 
   const configValue = useMemo(() => {
@@ -79,7 +79,7 @@ export function VehicleConfigBuilder({
       };
     }).filter((trupp) => trupp.slots.length > 0);
 
-    const config: VehicleConfig = {};
+    const config: any = {};
     if (truppOutputs.length > 0) {
       config.trupps = truppOutputs;
     }
@@ -107,7 +107,7 @@ export function VehicleConfigBuilder({
       id: generateId(),
       key: normalized.key,
       slotsInput,
-      allowsPraktikant: normalized.allowsPraktikant ?? false,
+      allowsPraktikant: (normalized as any).allowsPraktikant ?? false,
     };
   }
 

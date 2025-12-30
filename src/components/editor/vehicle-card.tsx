@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { DroppableSlot } from "./droppable-slot";
-import type { VehicleConfig, people as TPeople } from "@/types";
+import type { VehicleConfig, Database } from "@/types";
 import {
   normalizeVehicleSlot,
   normalizeVehicleTrupp,
   type NormalizedVehicleSlot,
 } from "@/lib/vehicle-config";
 
-type Person = TPeople["Row"];
+type Person = Database['public']['Tables']['people']['Row'];
 type AssignmentsMap = Map<string, Person | null>;
 
 export function VehicleCard({

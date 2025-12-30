@@ -4,9 +4,9 @@ import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { cn } from '@/lib/utils';
 import { DraggablePerson } from './draggable-person';
-import type { people } from '@/types/index';
+import type { Database } from '@/types/index';
 
-type Person = people['Row'];
+type Person = Database['public']['Tables']['people']['Row'];
 
 interface DroppableSlotProps {
   id: string;

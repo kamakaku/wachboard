@@ -48,7 +48,7 @@ export async function createPerson(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect('/app/people?error=Keine Berechtigung.');
@@ -69,7 +69,7 @@ export async function createPerson(formData: FormData) {
             photo_url: resolvedPhotoUrl,
             person_type: person_type || 'MITARBEITER',
             active: true
-        });
+        } as any);
 
     if (error) {
         console.error('Error creating person:', error);
@@ -100,7 +100,7 @@ export async function togglePersonActive(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect('/app/people?error=Keine Berechtigung.');
@@ -111,16 +111,16 @@ export async function togglePersonActive(formData: FormData) {
         .from('people')
         .select('station_id')
         .eq('id', personId)
-        .single();
+        .single<{ station_id: string }>();
 
     if (!person || person.station_id !== membership.station_id) {
         return redirect('/app/people?error=Person nicht gefunden.');
     }
 
     // Toggle active status
-    const { error } = await supabase
+    const { error } = await (supabase
         .from('people')
-        .update({ active: !currentStatus })
+        .update as any)({ active: !currentStatus })
         .eq('id', personId);
 
     if (error) {
@@ -151,7 +151,7 @@ export async function deletePerson(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect('/app/people?error=Keine Berechtigung.');
@@ -162,7 +162,7 @@ export async function deletePerson(formData: FormData) {
         .from('people')
         .select('station_id')
         .eq('id', personId)
-        .single();
+        .single<{ station_id: string }>();
 
     if (!person || person.station_id !== membership.station_id) {
         return redirect('/app/people?error=Person nicht gefunden.');
@@ -210,7 +210,7 @@ export async function updatePerson(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect('/app/people?error=Keine Berechtigung.');
@@ -220,7 +220,7 @@ export async function updatePerson(formData: FormData) {
         .from('people')
         .select('station_id')
         .eq('id', personId)
-        .single();
+        .single<{ station_id: string }>();
 
     if (!person || person.station_id !== membership.station_id) {
         return redirect('/app/people?error=Person nicht gefunden.');
@@ -230,9 +230,9 @@ export async function updatePerson(formData: FormData) {
         (await handlePhotoUpload(photo_file, membership.station_id, "/app/people")) ??
         (photo_url ?? null);
 
-    const { error } = await supabase
+    const { error } = await (supabase
         .from('people')
-        .update({
+        .update as any)({
             name,
             rank: rank || null,
             tags: tags.length > 0 ? tags : null,

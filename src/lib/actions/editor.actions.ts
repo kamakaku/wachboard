@@ -52,7 +52,7 @@ export async function assignPersonToSlot(payload: AssignmentPayload) {
             slot_key: slotKey,
             person_id: personId,
             updated_by: user.id,
-        }, {
+        } as any, {
             onConflict: 'shift_id, vehicle_key, slot_key'
         })
         .select()

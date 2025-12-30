@@ -55,7 +55,7 @@ export async function createVehicle(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/vehicles?error=Keine Berechtigung.');
@@ -68,7 +68,7 @@ export async function createVehicle(formData: FormData) {
         .eq('station_id', membership.station_id)
         .order('order', { ascending: false })
         .limit(1)
-        .single();
+        .single<{ order: number }>();
 
     const newOrder = maxOrderVehicle ? maxOrderVehicle.order + 1 : 0;
 
@@ -95,7 +95,7 @@ export async function createVehicle(formData: FormData) {
             order: newOrder,
             config,
             image_url: resolvedImageUrl
-        });
+        } as any);
 
     if (error) {
         console.error('[createVehicle] Database error:', error);
@@ -128,7 +128,7 @@ export async function deleteVehicle(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/vehicles?error=Keine Berechtigung.');
@@ -139,7 +139,7 @@ export async function deleteVehicle(formData: FormData) {
         .from('vehicle_configs')
         .select('station_id')
         .eq('id', vehicleId)
-        .single();
+        .single<{ station_id: string }>();
 
     if (!vehicle || vehicle.station_id !== membership.station_id) {
         return redirect('/app/vehicles?error=Fahrzeug nicht gefunden.');
@@ -180,7 +180,7 @@ export async function updateVehicleOrder(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/vehicles?error=Keine Berechtigung.');
@@ -192,7 +192,7 @@ export async function updateVehicleOrder(formData: FormData) {
         .select('*')
         .eq('id', vehicleId)
         .eq('station_id', membership.station_id)
-        .single();
+        .single() as any;
 
     if (!vehicle) {
         return redirect('/app/vehicles?error=Fahrzeug nicht gefunden.');
@@ -203,13 +203,13 @@ export async function updateVehicleOrder(formData: FormData) {
         .from('vehicle_configs')
         .select('*')
         .eq('station_id', membership.station_id)
-        .order('order', { ascending: true });
+        .order('order', { ascending: true }) as any;
 
     if (!vehicles) {
         return redirect('/app/vehicles?error=Fehler beim Laden der Fahrzeuge.');
     }
 
-    const currentIndex = vehicles.findIndex(v => v.id === vehicleId);
+    const currentIndex = vehicles.findIndex((v: any) => v.id === vehicleId);
     const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
 
     if (newIndex < 0 || newIndex >= vehicles.length) {
@@ -222,14 +222,14 @@ export async function updateVehicleOrder(formData: FormData) {
     vehicles[newIndex].order = temp;
 
     // Update both vehicles
-    await supabase
+    await (supabase
         .from('vehicle_configs')
-        .update({ order: vehicles[currentIndex].order })
+        .update as any)({ order: vehicles[currentIndex].order })
         .eq('id', vehicles[currentIndex].id);
 
-    await supabase
+    await (supabase
         .from('vehicle_configs')
-        .update({ order: vehicles[newIndex].order })
+        .update as any)({ order: vehicles[newIndex].order })
         .eq('id', vehicles[newIndex].id);
 
     revalidatePath('/app/vehicles');
@@ -266,7 +266,7 @@ export async function updateVehicle(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/vehicles?error=Keine Berechtigung.');
@@ -276,7 +276,7 @@ export async function updateVehicle(formData: FormData) {
         .from('vehicle_configs')
         .select('station_id')
         .eq('id', vehicleId)
-        .single();
+        .single<{ station_id: string }>();
 
     if (!vehicle || vehicle.station_id !== membership.station_id) {
         return redirect('/app/vehicles?error=Fahrzeug nicht gefunden.');
@@ -289,7 +289,7 @@ export async function updateVehicle(formData: FormData) {
         .eq('key', key)
         .neq('id', vehicleId)
         .limit(1)
-        .single();
+        .single<{ id: string }>();
 
     if (duplicate) {
         return redirect('/app/vehicles?error=Ein Fahrzeug mit diesem Schlüssel existiert bereits.');
@@ -299,9 +299,9 @@ export async function updateVehicle(formData: FormData) {
             (await handleVehiclePhotoUpload(imageFile, membership.station_id, "/app/vehicles")) ??
             (imageUrlInput ?? null);
 
-    const { error } = await supabase
+    const { error } = await (supabase
         .from('vehicle_configs')
-        .update({
+        .update as any)({
             key,
             title,
             config,

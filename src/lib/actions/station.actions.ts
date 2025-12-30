@@ -33,7 +33,7 @@ export async function createStationAndBecomeAdmin(formData: FormData) {
         .select('id')
         .eq('user_id', user.id)
         .limit(1)
-        .single();
+        .single<{ id: string }>();
 
     if (existingMembership) {
         return redirect('/app');
@@ -46,9 +46,9 @@ export async function createStationAndBecomeAdmin(formData: FormData) {
         // Create new organization
         const { data: newOrg, error: orgError } = await supabase
             .from('organizations')
-            .insert({ name: organizationName.trim() })
+            .insert({ name: organizationName.trim() } as any)
             .select('id')
-            .single();
+            .single<{ id: string }>();
 
         if (orgError || !newOrg) {
             console.error('Error creating organization:', orgError);
@@ -62,16 +62,16 @@ export async function createStationAndBecomeAdmin(formData: FormData) {
             .from('organizations')
             .select('id')
             .limit(1)
-            .single();
+            .single<{ id: string }>();
 
         if (defaultOrg) {
             orgId = defaultOrg.id;
         } else {
             const { data: newOrg, error: orgError } = await supabase
                 .from('organizations')
-                .insert({ name: 'Standard Organisation' })
+                .insert({ name: 'Standard Organisation' } as any)
                 .select('id')
-                .single();
+                .single<{ id: string }>();
 
             if (orgError || !newOrg) {
                 console.error('Error creating default organization:', orgError);
@@ -88,9 +88,9 @@ export async function createStationAndBecomeAdmin(formData: FormData) {
         .insert({
             org_id: orgId,
             name: stationName.trim()
-        })
+        } as any)
         .select('id')
-        .single();
+        .single<{ id: string }>();
 
     if (stationError || !station) {
         console.error('Error creating station:', stationError);
@@ -107,7 +107,7 @@ export async function createStationAndBecomeAdmin(formData: FormData) {
             user_id: user.id,
             station_id: station.id,
             role: 'ADMIN'
-        })
+        } as any)
         .select();
 
     console.log('Membership result:', { data: membershipData, error: membershipError });
@@ -155,7 +155,7 @@ export async function requestToJoinStation(formData: FormData) {
         .from('stations')
         .select('id, name')
         .eq('id', stationId)
-        .single();
+        .single<{ id: string; name: string }>();
 
     if (stationError || !station) {
         console.error('Station lookup error:', stationError);
@@ -168,7 +168,7 @@ export async function requestToJoinStation(formData: FormData) {
         .select('id, status')
         .eq('user_id', user.id)
         .eq('station_id', stationId)
-        .single();
+        .single<{ id: string; status: string }>();
 
     if (existingRequest) {
         if (existingRequest.status === 'PENDING') {
@@ -186,7 +186,7 @@ export async function requestToJoinStation(formData: FormData) {
             user_id: user.id,
             station_id: stationId,
             status: 'PENDING'
-        })
+        } as any)
         .select();
 
     if (requestError) {
@@ -258,7 +258,7 @@ export async function acceptJoinRequest(formData: FormData) {
         .from('join_requests')
         .select('*, station:stations(id)')
         .eq('id', requestId)
-        .single();
+        .single() as any;
 
     if (requestError || !request) {
         return redirect('/app/join-requests?error=Beitrittsanfrage nicht gefunden.');
@@ -270,7 +270,7 @@ export async function acceptJoinRequest(formData: FormData) {
         .select('role')
         .eq('user_id', user.id)
         .eq('station_id', request.station.id)
-        .single();
+        .single<{ role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/join-requests?error=Keine Berechtigung.');
@@ -293,7 +293,7 @@ export async function acceptJoinRequest(formData: FormData) {
 
     const { data: membershipResult, error: membershipError } = await supabase
         .from('memberships')
-        .insert(membershipData)
+        .insert(membershipData as any)
         .select();
 
     if (membershipError) {
@@ -310,9 +310,9 @@ export async function acceptJoinRequest(formData: FormData) {
     console.log('Membership created successfully:', membershipResult);
 
     // 4. Update join request status
-    const { error: updateError } = await supabase
+    const { error: updateError } = await (supabase
         .from('join_requests')
-        .update({ status: 'APPROVED' })
+        .update as any)({ status: 'APPROVED' })
         .eq('id', requestId);
 
     if (updateError) {
@@ -346,7 +346,7 @@ export async function rejectJoinRequest(formData: FormData) {
         .from('join_requests')
         .select('*, station:stations(id)')
         .eq('id', requestId)
-        .single();
+        .single() as any;
 
     if (requestError || !request) {
         return redirect('/admin?error=Beitrittsanfrage nicht gefunden.');
@@ -358,16 +358,16 @@ export async function rejectJoinRequest(formData: FormData) {
         .select('role')
         .eq('user_id', user.id)
         .eq('station_id', request.station.id)
-        .single();
+        .single<{ role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/admin?error=Keine Berechtigung.');
     }
 
     // 3. Update join request status
-    const { error: updateError } = await supabase
+    const { error: updateError } = await (supabase
         .from('join_requests')
-        .update({ status: 'REJECTED' })
+        .update as any)({ status: 'REJECTED' })
         .eq('id', requestId);
 
     if (updateError) {
@@ -409,7 +409,7 @@ export async function inviteUserByEmail(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!adminMembership || adminMembership.role !== 'ADMIN') {
         return redirect('/app/users?error=Keine Berechtigung.');
@@ -420,7 +420,7 @@ export async function inviteUserByEmail(formData: FormData) {
         .from('users_profile')
         .select('id')
         .eq('email', email.toLowerCase().trim())
-        .single();
+        .single<{ id: string }>();
 
     if (!targetUser) {
         return redirect('/app/users?error=Kein Benutzer mit dieser E-Mail-Adresse gefunden. Der Benutzer muss sich zuerst registrieren.');
@@ -432,7 +432,7 @@ export async function inviteUserByEmail(formData: FormData) {
         .select('id')
         .eq('user_id', targetUser.id)
         .eq('station_id', adminMembership.station_id)
-        .single();
+        .single<{ id: string }>();
 
     if (existingMembership) {
         return redirect('/app/users?error=Benutzer ist bereits Mitglied dieser Wache.');
@@ -453,7 +453,7 @@ export async function inviteUserByEmail(formData: FormData) {
 
     const { error: membershipError } = await supabase
         .from('memberships')
-        .insert(membershipData);
+        .insert(membershipData as any);
 
     if (membershipError) {
         console.error('Error creating membership:', membershipError);

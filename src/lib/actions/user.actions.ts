@@ -28,7 +28,7 @@ export async function updateUserRole(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!adminMembership || adminMembership.role !== 'ADMIN') {
         return redirect('/app/users?error=Keine Berechtigung.');
@@ -39,7 +39,7 @@ export async function updateUserRole(formData: FormData) {
         .from('memberships')
         .select('station_id, user_id')
         .eq('id', membershipId)
-        .single();
+        .single<{ station_id: string; user_id: string }>();
 
     if (!targetMembership || targetMembership.station_id !== adminMembership.station_id) {
         return redirect('/app/users?error=Mitgliedschaft nicht gefunden.');
@@ -51,9 +51,9 @@ export async function updateUserRole(formData: FormData) {
     }
 
     // Update role
-    const { error } = await supabase
+    const { error } = await (supabase
         .from('memberships')
-        .update({ role: newRole })
+        .update as any)({ role: newRole })
         .eq('id', membershipId);
 
     if (error) {
@@ -84,7 +84,7 @@ export async function removeMembership(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!adminMembership || adminMembership.role !== 'ADMIN') {
         return redirect('/app/users?error=Keine Berechtigung.');
@@ -95,7 +95,7 @@ export async function removeMembership(formData: FormData) {
         .from('memberships')
         .select('station_id, user_id')
         .eq('id', membershipId)
-        .single();
+        .single<{ station_id: string; user_id: string }>();
 
     if (!targetMembership || targetMembership.station_id !== adminMembership.station_id) {
         return redirect('/app/users?error=Mitgliedschaft nicht gefunden.');
@@ -146,7 +146,7 @@ export async function updateUserDivisions(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!adminMembership || adminMembership.role !== 'ADMIN') {
         return redirect('/app/users?error=Keine Berechtigung.');
@@ -157,7 +157,7 @@ export async function updateUserDivisions(formData: FormData) {
         .from('memberships')
         .select('station_id, user_id, role')
         .eq('id', membershipId)
-        .single();
+        .single<{ station_id: string; user_id: string; role: string }>();
 
     if (!targetMembership || targetMembership.station_id !== adminMembership.station_id) {
         return redirect('/app/users?error=Mitgliedschaft nicht gefunden.');
@@ -182,9 +182,9 @@ export async function updateUserDivisions(formData: FormData) {
     }
 
     // Update division_ids
-    const { error } = await supabase
+    const { error } = await (supabase
         .from('memberships')
-        .update({
+        .update as any)({
             division_ids: divisionIds.length > 0 ? divisionIds : null,
             // Also update the old division_id field for backward compatibility
             division_id: divisionIds.length > 0 ? divisionIds[0] : null

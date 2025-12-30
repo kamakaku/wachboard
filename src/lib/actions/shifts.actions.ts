@@ -50,7 +50,7 @@ export async function createShift(formData: FormData) {
         .from('memberships')
         .select('station_id, role, division_ids')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string; division_ids: string[] | null }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect('/app/shifts/new?error=Keine Berechtigung.');
@@ -61,7 +61,7 @@ export async function createShift(formData: FormData) {
         .from('divisions')
         .select('id, station_id')
         .eq('id', division_id)
-        .single();
+        .single<{ id: string; station_id: string }>();
 
     if (!division || division.station_id !== membership.station_id) {
         return redirect('/app/shifts/new?error=Ungültige Wachabteilung.');
@@ -112,9 +112,9 @@ export async function createShift(formData: FormData) {
             ends_at,
             label: tempLabel, // Use DAY or NIGHT until migration is run
             status: 'PUBLISHED'
-        })
+        } as any)
         .select()
-        .single();
+        .single<{ id: string }>();
 
     if (shiftError) {
         console.error('Error creating shift:', shiftError);
@@ -143,7 +143,7 @@ export async function createShift(formData: FormData) {
                     .from('vehicle_configs')
                     .select('key')
                     .eq('id', vehicleId)
-                    .single();
+                    .single<{ key: string }>();
 
                 if (vehicle) {
                     assignmentRecords.push({
@@ -161,7 +161,7 @@ export async function createShift(formData: FormData) {
     if (assignmentRecords.length > 0) {
         const { error: assignmentsError } = await supabase
             .from('assignments')
-            .insert(assignmentRecords);
+            .insert(assignmentRecords as any);
 
         if (assignmentsError) {
             console.error('Error creating assignments:', assignmentsError);
@@ -206,9 +206,9 @@ export async function updateShift(formData: FormData) {
         ends_at = endDate.toISOString().slice(0, 19);
     }
 
-    const { error } = await supabase
+    const { error } = await (supabase
         .from('shifts')
-        .update({
+        .update as any)({
             starts_at,
             ends_at,
             label,
@@ -285,7 +285,7 @@ export async function updateShiftComplete(formData: FormData) {
         .from('memberships')
         .select('station_id, role, division_ids')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string; division_ids: string[] | null }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect(`/app/shifts/${shift_id}/edit?error=Keine Berechtigung.`);
@@ -296,7 +296,7 @@ export async function updateShiftComplete(formData: FormData) {
         .from('shifts')
         .select('id, station_id, division_id')
         .eq('id', shift_id)
-        .single();
+        .single<{ id: string; station_id: string; division_id: string }>();
 
     if (!existingShift || existingShift.station_id !== membership.station_id) {
         return redirect('/app/shifts?error=Schicht nicht gefunden.');
@@ -315,7 +315,7 @@ export async function updateShiftComplete(formData: FormData) {
         .from('divisions')
         .select('id, station_id')
         .eq('id', division_id)
-        .single();
+        .single<{ id: string; station_id: string }>();
 
     if (!division || division.station_id !== membership.station_id) {
         return redirect(`/app/shifts/${shift_id}/edit?error=Ungültige Wachabteilung.`);
@@ -354,9 +354,9 @@ export async function updateShiftComplete(formData: FormData) {
     const tempLabel = (hour >= 7 && hour < 19) ? 'DAY' : 'NIGHT';
 
     // Update shift
-    const { error: shiftError } = await supabase
+    const { error: shiftError } = await (supabase
         .from('shifts')
-        .update({
+        .update as any)({
             division_id,
             starts_at,
             ends_at,
@@ -389,11 +389,11 @@ export async function updateShiftComplete(formData: FormData) {
     const { data: allVehicles } = await supabase
         .from('vehicle_configs')
         .select('id, key, config')
-        .eq('station_id', membership.station_id);
+        .eq('station_id', membership.station_id) as any;
 
     const vehicleIdToKey = new Map();
     const vehicleKeyToId = new Map();
-    allVehicles?.forEach(v => {
+    allVehicles?.forEach((v: any) => {
         vehicleIdToKey.set(v.id, v.key);
         vehicleKeyToId.set(v.key, v.id);
     });
@@ -412,7 +412,7 @@ export async function updateShiftComplete(formData: FormData) {
             const targetVehicleKey = vehicleIdToKey.get(targetVehicleId);
             if (targetVehicleKey) {
                 // Get source trupp config to know which slots exist
-                const sourceVehicle = allVehicles?.find(v => v.id === copiedTrupp.sourceVehicleId);
+                const sourceVehicle = allVehicles?.find((v: any) => v.id === copiedTrupp.sourceVehicleId);
                 const sourceTrupp = sourceVehicle?.config?.trupps?.find((t: any) => t.key === copiedTrupp.sourceTruppKey);
 
                 if (sourceTrupp?.slots) {
@@ -583,7 +583,7 @@ export async function updateShiftComplete(formData: FormData) {
     if (assignmentRecords.length > 0) {
         const { error: assignmentsError } = await supabase
             .from('assignments')
-            .insert(assignmentRecords);
+            .insert(assignmentRecords as any);
 
         if (assignmentsError) {
             console.error('Error creating assignments:', assignmentsError);
@@ -620,7 +620,7 @@ export async function duplicateShift(formData: FormData) {
         .from('memberships')
         .select('station_id, role, division_ids')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string; division_ids: string[] | null }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect('/app/shifts?error=Keine Berechtigung.');
@@ -635,7 +635,7 @@ export async function duplicateShift(formData: FormData) {
         `)
         .eq('id', shiftId)
         .eq('station_id', membership.station_id)
-        .single();
+        .single() as any;
 
     if (shiftError || !originalShift) {
         return redirect('/app/shifts?error=Schicht nicht gefunden.');
@@ -682,9 +682,9 @@ export async function duplicateShift(formData: FormData) {
             label: originalShift.label,
             status: 'PUBLISHED',
             wachleitung_im_haus: originalShift.wachleitung_im_haus
-        })
+        } as any)
         .select()
-        .single();
+        .single<{ id: string }>();
 
     if (createError || !newShift) {
         console.error('Error duplicating shift:', createError);
@@ -742,7 +742,7 @@ export async function deleteShift(formData: FormData) {
         .from('memberships')
         .select('station_id, role, division_ids')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string; division_ids: string[] | null }>();
 
     if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
         return redirect('/app/shifts?error=Keine Berechtigung.');
@@ -754,7 +754,7 @@ export async function deleteShift(formData: FormData) {
         .select('id, station_id, division_id')
         .eq('id', shiftId)
         .eq('station_id', membership.station_id)
-        .single();
+        .single<{ id: string; station_id: string; division_id: string }>();
 
     if (shiftError || !shift) {
         return redirect('/app/shifts?error=Schicht nicht gefunden.');

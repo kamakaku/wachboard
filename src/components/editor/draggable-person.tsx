@@ -5,10 +5,10 @@ import { useDraggable } from '@dnd-kit/core';
 import { cn } from '@/lib/utils';
 import { Card } from '../ui/card';
 import { GripVertical } from 'lucide-react';
-import type { people } from '@/types/index';
+import type { Database } from '@/types/index';
 import { Avatar } from '../ui/avatar';
 
-type Person = people['Row'];
+type Person = Database['public']['Tables']['people']['Row'];
 
 export function DraggablePerson({ person, id, fromSlot, isOverlay = false }: { person: Person, id: string, fromSlot?: string, isOverlay?: boolean }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({

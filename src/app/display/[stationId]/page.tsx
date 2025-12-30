@@ -37,7 +37,7 @@ export default function DisplayPage({ params }: { params: { stationId: string } 
 
     useEffect(() => {
         const fetchInitialData = async () => {
-            const { data: stationData } = await supabase.from('stations').select('name, crest_url').eq('id', stationId).single();
+            const { data: stationData } = await supabase.from('stations').select('name, crest_url').eq('id', stationId).single<{ name: string; crest_url: string | null }>();
             if (stationData) {
                 setStationName(stationData.name);
                 setStationCrestUrl(stationData.crest_url);
@@ -57,7 +57,7 @@ export default function DisplayPage({ params }: { params: { stationId: string } 
             if (error) console.error("Error fetching shifts:", error);
             else if (shiftData) {
                 console.log('Fetched shifts count:', shiftData.length);
-                console.log('Fetched shifts details:', shiftData.map(s => ({
+                console.log('Fetched shifts details:', (shiftData as any).map((s: any) => ({
                     id: s.id,
                     division: s.division?.name,
                     starts_at: s.starts_at,
@@ -162,7 +162,7 @@ export default function DisplayPage({ params }: { params: { stationId: string } 
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    {currentShift.wachleitung_im_haus && (
+                                    {(currentShift as any).wachleitung_im_haus && (
                                         <Badge className="bg-yellow-400 text-yellow-900 font-bold text-xs px-2 py-0.5">
                                             WL im Haus
                                         </Badge>
@@ -215,7 +215,7 @@ export default function DisplayPage({ params }: { params: { stationId: string } 
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    {nextShift.wachleitung_im_haus && (
+                                    {(nextShift as any).wachleitung_im_haus && (
                                         <Badge className="bg-yellow-400 text-yellow-900 font-bold text-xs px-2 py-0.5">
                                             WL im Haus
                                         </Badge>

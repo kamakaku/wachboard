@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { DraggablePerson } from "./draggable-person";
-import type { people } from '@/types/index';
+import type { Database } from '@/types/index';
 
-type Person = people['Row'];
+type Person = Database['public']['Tables']['people']['Row'];
 
 export function PersonPool({ people, assignedPersonIds }: { people: Person[], assignedPersonIds: Set<string> }) {
     

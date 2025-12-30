@@ -25,7 +25,7 @@ export async function createShiftTemplate(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/settings?error=Keine Berechtigung.');
@@ -39,7 +39,7 @@ export async function createShiftTemplate(formData: FormData) {
             label,
             start_time,
             end_time
-        });
+        } as any);
 
     if (error) {
         console.error('Error creating shift template:', error);
@@ -75,16 +75,16 @@ export async function updateShiftTemplate(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/settings?error=Keine Berechtigung.');
     }
 
     // Update shift template
-    const { error } = await supabase
+    const { error } = await (supabase
         .from('shift_templates')
-        .update({
+        .update as any)({
             label,
             start_time,
             end_time
@@ -123,7 +123,7 @@ export async function deleteShiftTemplate(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/settings?error=Keine Berechtigung.');
@@ -166,7 +166,7 @@ export async function updateScheduleCycle(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/settings?error=Keine Berechtigung.');
@@ -188,15 +188,15 @@ export async function updateScheduleCycle(formData: FormData) {
         .from('schedule_cycles')
         .select('id')
         .eq('station_id', membership.station_id)
-        .single();
+        .single<{ id: string }>();
 
     let error;
 
     if (existingCycle) {
         // Update existing cycle
-        const result = await supabase
+        const result = await (supabase
             .from('schedule_cycles')
-            .update({
+            .update as any)({
                 start_date,
                 switch_hours,
                 order_division_ids: division_ids
@@ -213,7 +213,7 @@ export async function updateScheduleCycle(formData: FormData) {
                 start_date,
                 switch_hours,
                 order_division_ids: division_ids
-            });
+            } as any);
 
         error = result.error;
     }

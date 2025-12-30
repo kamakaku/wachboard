@@ -25,7 +25,7 @@ export async function updateStationSettings(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN' || membership.station_id !== stationId) {
         return redirect('/app/settings?error=Keine Berechtigung.');
@@ -64,9 +64,9 @@ export async function updateStationSettings(formData: FormData) {
         updateData.crest_url = crestUrl;
     }
 
-    const { error: updateError } = await supabase
+    const { error: updateError } = await (supabase
         .from('stations')
-        .update(updateData)
+        .update as any)(updateData)
         .eq('id', stationId);
 
     if (updateError) {

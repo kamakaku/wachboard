@@ -24,7 +24,7 @@ export async function createDivision(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/divisions?error=Keine Berechtigung.');
@@ -37,7 +37,7 @@ export async function createDivision(formData: FormData) {
             station_id: membership.station_id,
             name: name.trim(),
             color: color || null
-        });
+        } as any);
 
     if (error) {
         console.error('Error creating division:', error);
@@ -67,7 +67,7 @@ export async function deleteDivision(formData: FormData) {
         .from('memberships')
         .select('station_id, role')
         .eq('user_id', user.id)
-        .single();
+        .single<{ station_id: string; role: string }>();
 
     if (!membership || membership.role !== 'ADMIN') {
         return redirect('/app/divisions?error=Keine Berechtigung.');
@@ -78,7 +78,7 @@ export async function deleteDivision(formData: FormData) {
         .from('divisions')
         .select('station_id')
         .eq('id', divisionId)
-        .single();
+        .single<{ station_id: string }>();
 
     if (!division || division.station_id !== membership.station_id) {
         return redirect('/app/divisions?error=Division nicht gefunden.');

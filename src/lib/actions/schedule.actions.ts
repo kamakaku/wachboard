@@ -28,7 +28,7 @@ export async function updateScheduleCycle(formData: FormData) {
     .from("memberships")
     .select("station_id, role")
     .eq("user_id", user.id)
-    .single();
+    .single<{ station_id: string; role: string }>();
 
   if (!membership || membership.role !== "ADMIN") {
     return redirect("/app/divisions?error=Keine Berechtigung.");
@@ -42,7 +42,7 @@ export async function updateScheduleCycle(formData: FormData) {
     switch_hours: Number.isFinite(switchHours) ? switchHours : 12,
   };
 
-  const { error } = await supabase.from("schedule_cycles").upsert(payload, {
+  const { error } = await supabase.from("schedule_cycles").upsert(payload as any, {
     onConflict: "station_id",
   });
 

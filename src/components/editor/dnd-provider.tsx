@@ -33,9 +33,9 @@ export function DndProvider({ children, onDragEnd }: { children: React.ReactNode
             {children}
             <DragOverlay>
                 {activeId && activeId.startsWith('person-') ? (
-                    <DraggablePerson 
+                    <DraggablePerson
                         id={activeId}
-                        person={{ id: activeId.replace('person-',''), name: 'Dragging', rank: '...', station_id: '', active: true, created_at: '' }}
+                        person={{ id: activeId.replace('person-',''), name: 'Dragging', rank: '...', station_id: '', active: true, created_at: '', photo_url: null, tags: null }}
                         isOverlay
                     />
                 ) : null}

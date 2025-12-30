@@ -18,7 +18,7 @@ export async function generateShiftsForNext30Days() {
         .select('station_id, role')
         .eq('user_id', user.id)
         .limit(1)
-        .single();
+        .single<{ station_id: string; role: string }>();
     
     if (membershipError || !membership) {
         throw new Error("User has no station membership.");
@@ -35,7 +35,7 @@ export async function generateShiftsForNext30Days() {
         .from('schedule_cycles')
         .select('*')
         .eq('station_id', stationId)
-        .single();
+        .single() as any;
 
     if (cycleError || !cycle) {
         throw new Error("Schedule cycle not configured for this station.");
@@ -44,14 +44,14 @@ export async function generateShiftsForNext30Days() {
     const { data: templates, error: templatesError } = await supabase
         .from('shift_templates')
         .select('*')
-        .eq('station_id', stationId);
+        .eq('station_id', stationId) as any;
 
     if (templatesError || !templates || templates.length === 0) {
         throw new Error("Shift templates not configured for this station.");
     }
 
-    const dayTemplate = templates.find((t) => t.label === "DAY");
-    const nightTemplate = templates.find((t) => t.label === "NIGHT");
+    const dayTemplate = templates.find((t: any) => t.label === "DAY");
+    const nightTemplate = templates.find((t: any) => t.label === "NIGHT");
 
     if (!dayTemplate || !nightTemplate) {
         throw new Error("Both DAY and NIGHT shift templates must exist.");
@@ -134,9 +134,7 @@ export async function generateShiftsForNext30Days() {
     // 4. Insert shifts, ignoring duplicates
     const { error: insertError } = await supabase
         .from('shifts')
-        .insert(shiftsToCreate, {
-            onConflict: 'division_id, starts_at'
-        });
+        .insert(shiftsToCreate as any);
 
     if (insertError) {
         console.error("Error inserting shifts:", insertError);
