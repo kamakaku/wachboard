@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { login, signup } from '@/lib/actions/auth.actions'
 import { Button } from "@/components/ui/button"
@@ -15,7 +16,7 @@ import { Label } from "@/components/ui/label"
 import { APP_NAME } from '@/lib/constants'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
   const view = searchParams.get('view') || 'login'
@@ -79,6 +80,14 @@ export default function LoginPage() {
         </Card>
       </TabsContent>
     </Tabs>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-sm">Lädt...</div>}>
+      <LoginForm />
+    </Suspense>
   )
 }
 
