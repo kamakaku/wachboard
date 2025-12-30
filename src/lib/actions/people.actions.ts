@@ -33,6 +33,7 @@ export async function createPerson(formData: FormData) {
     const photo_url = formData.get('photo_url') as string;
     const photo_file = formData.get('photo_file') as File | null;
     const person_type = formData.get('person_type') as string | null;
+    const divisionIdsFromForm = formData.getAll('division_ids') as string[];
 
     if (!name || name.trim() === '') {
         return redirect('/app/people?error=Name ist erforderlich.');
@@ -42,6 +43,9 @@ export async function createPerson(formData: FormData) {
     const tags = tagsString
         ? tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
         : [];
+
+    // Parse division IDs from checkboxes
+    const divisionIds = divisionIdsFromForm.filter(id => id && id.trim() !== '');
 
     // Get user's station
     const { data: membership } = await supabase
@@ -68,6 +72,7 @@ export async function createPerson(formData: FormData) {
             tags: tags.length > 0 ? tags : null,
             photo_url: resolvedPhotoUrl,
             person_type: person_type || 'MITARBEITER',
+            division_ids: divisionIds.length > 0 ? divisionIds : null,
             active: true
         } as any);
 
@@ -197,6 +202,7 @@ export async function updatePerson(formData: FormData) {
     const tagsString = (formData.get('tags') as string | null) ?? "";
     const photo_url = (formData.get('photo_url') as string | null)?.trim() ?? "";
     const photo_file = formData.get("photo_file") as File | null;
+    const divisionIdsFromForm = formData.getAll('division_ids') as string[];
 
     if (!personId || name === "") {
         return redirect('/app/people?error=Name ist erforderlich.');
@@ -205,6 +211,9 @@ export async function updatePerson(formData: FormData) {
     const tags = tagsString
         ? tagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
         : [];
+
+    // Parse division IDs from checkboxes
+    const divisionIds = divisionIdsFromForm.filter(id => id && id.trim() !== '');
 
     const { data: membership } = await supabase
         .from('memberships')
@@ -236,7 +245,8 @@ export async function updatePerson(formData: FormData) {
             name,
             rank: rank || null,
             tags: tags.length > 0 ? tags : null,
-            photo_url: resolvedPhotoUrl
+            photo_url: resolvedPhotoUrl,
+            division_ids: divisionIds.length > 0 ? divisionIds : null
         })
         .eq('id', personId);
 

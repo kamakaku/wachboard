@@ -183,6 +183,7 @@ export default async function NewShiftPage({
         <ShiftAssignmentComplete
           vehicles={vehicles || []}
           people={people || []}
+          divisions={divisions || []}
         />
 
         <div className="flex gap-4 justify-end">

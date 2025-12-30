@@ -22,11 +22,18 @@ import { Label } from "@/components/ui/label";
 import { MoreHorizontal } from "lucide-react";
 import { togglePersonActive, updatePerson, deletePerson } from "@/lib/actions/people.actions";
 
-type PeopleActionsMenuProps = {
-  person: any;
+type Division = {
+  id: string;
+  name: string;
+  color?: string;
 };
 
-export function PeopleActionsMenu({ person }: PeopleActionsMenuProps) {
+type PeopleActionsMenuProps = {
+  person: any;
+  divisions: Division[];
+};
+
+export function PeopleActionsMenu({ person, divisions }: PeopleActionsMenuProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -97,6 +104,42 @@ export function PeopleActionsMenu({ person }: PeopleActionsMenuProps) {
               name="tags"
               defaultValue={person.tags?.join(", ") ?? ""}
             />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor={`edit-divisions-${person.id}`}>Wachabteilungen (optional)</Label>
+            <div className="border rounded-md p-3 space-y-2">
+              {divisions && divisions.length > 0 ? (
+                divisions.map((division) => (
+                  <div key={division.id} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={`edit-division-${person.id}-${division.id}`}
+                      name="division_ids"
+                      value={division.id}
+                      defaultChecked={person.division_ids?.includes(division.id)}
+                      className="h-4 w-4 rounded border-gray-300"
+                    />
+                    <label
+                      htmlFor={`edit-division-${person.id}-${division.id}`}
+                      className="text-sm cursor-pointer flex items-center gap-2"
+                    >
+                      {division.color && (
+                        <span
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: division.color }}
+                        />
+                      )}
+                      {division.name}
+                    </label>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">Keine Wachabteilungen verfügbar</p>
+              )}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Leer lassen = für alle Wachabteilungen verfügbar
+            </p>
           </div>
           <div className="grid gap-2">
             <Label htmlFor={`edit-photo-url-${person.id}`}>Foto-URL</Label>

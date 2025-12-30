@@ -51,6 +51,13 @@ export default async function PeoplePage({ searchParams }: PeoplePageProps) {
     .eq("station_id", membership.station_id)
     .order("name", { ascending: true });
 
+  // Get all divisions for this station
+  const { data: divisions } = await supabase
+    .from("divisions")
+    .select("id, name, color")
+    .eq("station_id", membership.station_id)
+    .order("name", { ascending: true });
+
   return (
     <div className="py-8 px-6">
       <div className="mb-6">
@@ -73,7 +80,7 @@ export default async function PeoplePage({ searchParams }: PeoplePageProps) {
         </Alert>
       )}
 
-      <PeoplePoolsManager people={people || []} />
+      <PeoplePoolsManager people={people || []} divisions={divisions || []} />
     </div>
   );
 }

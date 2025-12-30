@@ -14,7 +14,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { X, GripVertical, Users, Stethoscope, ShieldAlert, Copy } from "lucide-react";
+import { X, GripVertical, Users, Stethoscope, ShieldAlert, Copy, Filter } from "lucide-react";
 
 type Person = {
   id: string;
@@ -23,6 +23,7 @@ type Person = {
   tags?: string[];
   photo_url?: string;
   person_type?: 'MITARBEITER' | 'NOTARZT' | 'FUEHRUNGSDIENST';
+  division_ids?: string[];
 };
 
 type Vehicle = {
@@ -43,9 +44,17 @@ type Vehicle = {
   };
 };
 
+type Division = {
+  id: string;
+  name: string;
+  color?: string;
+};
+
 type ShiftAssignmentProps = {
   vehicles: Vehicle[];
   people: Person[];
+  divisions?: Division[];
+  divisionId?: string;
   initialAssignments?: {
     [vehicleId: string]: {
       [slotKey: string]: string | null;
@@ -68,11 +77,28 @@ type ShiftAssignmentProps = {
   };
 };
 
-export function ShiftAssignmentComplete({ vehicles, people, initialAssignments, initialCopiedTrupps, initialPraktikantFlags, initialTruppPraktikantFlags }: ShiftAssignmentProps) {
-  // Filter people by type
-  const mitarbeiter = people.filter(p => !p.person_type || p.person_type === 'MITARBEITER');
-  const notarzte = people.filter(p => p.person_type === 'NOTARZT');
-  const fuehrungsdienst = people.filter(p => p.person_type === 'FUEHRUNGSDIENST');
+export function ShiftAssignmentComplete({ vehicles, people, divisions, divisionId, initialAssignments, initialCopiedTrupps, initialPraktikantFlags, initialTruppPraktikantFlags }: ShiftAssignmentProps) {
+  // Division filter state - starts with "all" to show everyone
+  const [selectedDivisionFilter, setSelectedDivisionFilter] = useState<string>("all");
+
+  // Filter people by division and type
+  const filterPeopleByDivision = (personList: Person[]) => {
+    // If "all" is selected or no divisions available, show all people
+    if (selectedDivisionFilter === "all" || !divisions || divisions.length === 0) {
+      return personList;
+    }
+
+    // Filter by selected division
+    return personList.filter(p =>
+      !p.division_ids ||
+      p.division_ids.length === 0 ||
+      p.division_ids.includes(selectedDivisionFilter)
+    );
+  };
+
+  const mitarbeiter = filterPeopleByDivision(people.filter(p => !p.person_type || p.person_type === 'MITARBEITER'));
+  const notarzte = filterPeopleByDivision(people.filter(p => p.person_type === 'NOTARZT'));
+  const fuehrungsdienst = filterPeopleByDivision(people.filter(p => p.person_type === 'FUEHRUNGSDIENST'));
 
   // Assignments - allow multiple vehicles per person
   const [assignments, setAssignments] = useState<{
@@ -268,6 +294,27 @@ export function ShiftAssignmentComplete({ vehicles, people, initialAssignments, 
               <CardDescription className="text-xs">
                 Personen auf Positionen ziehen
               </CardDescription>
+              {divisions && divisions.length > 0 && (
+                <div className="mt-3 space-y-1">
+                  <Label htmlFor="division-filter" className="text-xs flex items-center gap-1">
+                    <Filter className="h-3 w-3" />
+                    Nach Wachabteilung filtern
+                  </Label>
+                  <select
+                    id="division-filter"
+                    value={selectedDivisionFilter}
+                    onChange={(e) => setSelectedDivisionFilter(e.target.value)}
+                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                  >
+                    <option value="all">Alle anzeigen</option>
+                    {divisions.map((division) => (
+                      <option key={division.id} value={division.id}>
+                        {division.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </CardHeader>
             <CardContent className="p-0">
               <Tabs value={activePersonTab} onValueChange={setActivePersonTab}>

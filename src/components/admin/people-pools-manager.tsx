@@ -37,13 +37,21 @@ type Person = {
   active: boolean;
   email?: string;
   person_type?: 'MITARBEITER' | 'NOTARZT' | 'FUEHRUNGSDIENST';
+  division_ids?: string[];
+};
+
+type Division = {
+  id: string;
+  name: string;
+  color?: string;
 };
 
 type PeoplePoolsManagerProps = {
   people: Person[];
+  divisions: Division[];
 };
 
-export function PeoplePoolsManager({ people }: PeoplePoolsManagerProps) {
+export function PeoplePoolsManager({ people, divisions }: PeoplePoolsManagerProps) {
   const mitarbeiter = people.filter(p => !p.person_type || p.person_type === 'MITARBEITER');
   const notarzte = people.filter(p => p.person_type === 'NOTARZT');
   const fuehrungsdienst = people.filter(p => p.person_type === 'FUEHRUNGSDIENST');
@@ -91,6 +99,41 @@ export function PeoplePoolsManager({ people }: PeoplePoolsManagerProps) {
             </p>
           </div>
           <div className="grid gap-2">
+            <Label htmlFor={`create-divisions-${personType}`}>Wachabteilungen (optional)</Label>
+            <div className="border rounded-md p-3 space-y-2">
+              {divisions && divisions.length > 0 ? (
+                divisions.map((division) => (
+                  <div key={division.id} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={`division-${personType}-${division.id}`}
+                      name="division_ids"
+                      value={division.id}
+                      className="h-4 w-4 rounded border-gray-300"
+                    />
+                    <label
+                      htmlFor={`division-${personType}-${division.id}`}
+                      className="text-sm cursor-pointer flex items-center gap-2"
+                    >
+                      {division.color && (
+                        <span
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: division.color }}
+                        />
+                      )}
+                      {division.name}
+                    </label>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground">Keine Wachabteilungen verfügbar</p>
+              )}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Leer lassen = für alle Wachabteilungen verfügbar
+            </p>
+          </div>
+          <div className="grid gap-2">
             <Label htmlFor={`create-photo_url-${personType}`}>Foto-URL (optional)</Label>
             <Input
               id={`create-photo_url-${personType}`}
@@ -124,6 +167,7 @@ export function PeoplePoolsManager({ people }: PeoplePoolsManagerProps) {
             <TableHead>Name</TableHead>
             <TableHead>Rang</TableHead>
             <TableHead>Qualifikationen</TableHead>
+            <TableHead>Wachabteilungen</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Aktionen</TableHead>
           </TableRow>
@@ -161,12 +205,34 @@ export function PeoplePoolsManager({ people }: PeoplePoolsManagerProps) {
                 )}
               </TableCell>
               <TableCell>
+                {person.division_ids && person.division_ids.length > 0 ? (
+                  <div className="flex flex-wrap gap-1">
+                    {person.division_ids.map((divisionId: string) => {
+                      const division = divisions.find(d => d.id === divisionId);
+                      return division ? (
+                        <Badge key={divisionId} variant="secondary" className="flex items-center gap-1">
+                          {division.color && (
+                            <span
+                              className="w-2 h-2 rounded-full"
+                              style={{ backgroundColor: division.color }}
+                            />
+                          )}
+                          {division.name}
+                        </Badge>
+                      ) : null;
+                    })}
+                  </div>
+                ) : (
+                  <span className="text-sm text-muted-foreground">Alle</span>
+                )}
+              </TableCell>
+              <TableCell>
                 <Badge variant={person.active ? "default" : "secondary"}>
                   {person.active ? "Aktiv" : "Inaktiv"}
                 </Badge>
               </TableCell>
               <TableCell>
-                <PeopleActionsMenu person={person} />
+                <PeopleActionsMenu person={person} divisions={divisions} />
               </TableCell>
             </TableRow>
           ))}

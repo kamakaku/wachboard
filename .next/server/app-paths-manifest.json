@@ -1,6 +1,20 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/auth/callback/route": "app/auth/callback/route.js",
   "/page": "app/page.js",
-  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/display/[stationId]/page": "app/display/[stationId]/page.js",
   "/(auth)/onboarding/page": "app/(auth)/onboarding/page.js",
-  "/(main)/app/page": "app/(main)/app/page.js"
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(main)/app/people/page": "app/(main)/app/people/page.js",
+  "/(main)/app/page": "app/(main)/app/page.js",
+  "/(main)/app/shifts/new/page": "app/(main)/app/shifts/new/page.js",
+  "/(main)/app/editor/[shiftId]/page": "app/(main)/app/editor/[shiftId]/page.js",
+  "/(main)/app/settings/migrate/page": "app/(main)/app/settings/migrate/page.js",
+  "/(main)/app/vehicles/page": "app/(main)/app/vehicles/page.js",
+  "/(main)/app/shifts/[id]/edit/page": "app/(main)/app/shifts/[id]/edit/page.js",
+  "/(main)/app/settings/page": "app/(main)/app/settings/page.js",
+  "/(main)/app/shifts/page": "app/(main)/app/shifts/page.js",
+  "/(main)/app/join-requests/page": "app/(main)/app/join-requests/page.js",
+  "/(main)/app/users/page": "app/(main)/app/users/page.js",
+  "/(main)/app/divisions/page": "app/(main)/app/divisions/page.js"
 }

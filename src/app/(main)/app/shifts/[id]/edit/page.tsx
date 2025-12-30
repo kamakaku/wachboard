@@ -355,6 +355,8 @@ export default async function EditShiftPage({
         <ShiftAssignmentComplete
           vehicles={vehicleList as any}
           people={people || []}
+          divisions={divisions || []}
+          divisionId={shift.division_id}
           initialAssignments={existingAssignments}
           initialCopiedTrupps={existingCopiedTrupps}
           initialPraktikantFlags={existingPraktikantFlags}
