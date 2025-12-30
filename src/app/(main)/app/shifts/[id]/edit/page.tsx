@@ -15,6 +15,21 @@ import { ArrowLeft } from "lucide-react";
 import { ShiftAssignmentComplete } from "@/components/admin/shift-assignment-complete";
 import { ShiftTypeSelector } from "@/components/admin/shift-type-selector";
 import { updateShiftComplete } from "@/lib/actions/shifts.actions";
+import { Database } from "@/types";
+
+type ShiftAssignment = {
+  id: string;
+  vehicle_key: string;
+  slot_key: string;
+  person_id: string | null;
+  from_trupp_key: string | null;
+  placeholder_text: string | null;
+};
+
+type ShiftWithRelations = Database["public"]["Tables"]["shifts"]["Row"] & {
+  division: { id: string; name: string };
+  assignments: ShiftAssignment[];
+};
 
 export default async function EditShiftPage({
   params,
@@ -62,7 +77,7 @@ export default async function EditShiftPage({
   // Get shift details
   const { data: shift } = await supabase
     .from("shifts")
-    .select(`
+    .select<ShiftWithRelations>(`
       *,
       division:divisions(id, name),
       assignments:assignments(id, vehicle_key, slot_key, person_id, from_trupp_key, placeholder_text)
