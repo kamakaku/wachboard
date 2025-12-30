@@ -29,7 +29,7 @@ type Vehicle = {
   id: string;
   key: string;
   title: string;
-  image_url?: string;
+  image_url?: string | null;
   config: {
     trupps?: Array<{
       key: string;
