@@ -65,7 +65,11 @@ export default async function SettingsPage({
     .from("stations")
     .select("id, name, crest_url")
     .eq("id", membership.station_id)
-    .single();
+    .single<{
+      id: string;
+      name: string;
+      crest_url: string | null;
+    }>();
 
   return (
     <div className="py-8 px-6">
