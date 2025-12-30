@@ -33,7 +33,10 @@ export default async function SettingsPage({
     .from("memberships")
     .select("station_id, role")
     .eq("user_id", user.id)
-    .single();
+    .single<{
+      station_id: string;
+      role: "ADMIN" | "EDITOR" | "VIEWER";
+    }>();
 
   if (!membership || membership.role !== "ADMIN") {
     return (
