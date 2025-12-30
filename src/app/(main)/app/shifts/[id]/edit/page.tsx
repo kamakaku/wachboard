@@ -77,14 +77,14 @@ export default async function EditShiftPage({
   // Get shift details
   const { data: shift } = await supabase
     .from("shifts")
-    .select<ShiftWithRelations>(`
+    .select(`
       *,
       division:divisions(id, name),
       assignments:assignments(id, vehicle_key, slot_key, person_id, from_trupp_key, placeholder_text)
     `)
     .eq("id", params.id)
     .eq("station_id", membership.station_id)
-    .single();
+    .single<ShiftWithRelations>();
 
   if (!shift) {
     notFound();
