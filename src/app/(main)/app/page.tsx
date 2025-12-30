@@ -44,18 +44,7 @@ export default async function AdminPage({
     .single<{ station_id: string; role: string }>();
 
   if (!membership) {
-    return (
-      <div className="py-8 px-6">
-        <Card className="border-destructive">
-          <CardHeader>
-            <CardTitle>Keine Wache zugewiesen</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Sie sind keiner Wache zugewiesen. Bitte kontaktieren Sie einen Administrator.</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    redirect("/onboarding");
   }
 
   const isAdmin = membership.role === "ADMIN";
