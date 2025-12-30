@@ -342,7 +342,7 @@ export default async function EditShiftPage({
                 type="checkbox"
                 id="wachleitung-im-haus"
                 name="wachleitung_im_haus"
-                defaultChecked={shift.wachleitung_im_haus}
+                defaultChecked={(shift as any).wachleitung_im_haus}
                 className="h-4 w-4 rounded border-gray-300"
               />
               <Label htmlFor="wachleitung-im-haus" className="cursor-pointer">
