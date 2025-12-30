@@ -28,7 +28,7 @@ async function runMigration() {
     .from("memberships")
     .select("station_id, role")
     .eq("user_id", user.id)
-    .single();
+    .single<{ station_id: string; role: string }>();
 
   if (!membership || membership.role !== "ADMIN") {
     return redirect("/admin/settings?error=Keine Berechtigung.");
@@ -96,7 +96,7 @@ export default async function MigratePage({
     .from("memberships")
     .select("station_id, role")
     .eq("user_id", user.id)
-    .single();
+    .single<{ station_id: string; role: string }>();
 
   if (!membership || membership.role !== "ADMIN") {
     return (
