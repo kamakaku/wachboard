@@ -1,8 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/display/[stationId]/page": "app/display/[stationId]/page.js",
-  "/(main)/app/shifts/page": "app/(main)/app/shifts/page.js",
-  "/(main)/app/shifts/new/page": "app/(main)/app/shifts/new/page.js",
+  "/(main)/app/shifts/[id]/edit/page": "app/(main)/app/shifts/[id]/edit/page.js",
+  "/(main)/app/page": "app/(main)/app/page.js",
   "/(main)/app/people/page": "app/(main)/app/people/page.js",
-  "/(main)/app/page": "app/(main)/app/page.js"
+  "/(main)/app/shifts/new/page": "app/(main)/app/shifts/new/page.js"
 }

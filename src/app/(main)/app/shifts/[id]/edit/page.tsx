@@ -31,6 +31,8 @@ type ShiftWithRelations = Database["public"]["Tables"]["shifts"]["Row"] & {
   assignments: ShiftAssignment[];
 };
 
+type VehicleConfigRow = Database["public"]["Tables"]["vehicle_configs"]["Row"];
+
 export default async function EditShiftPage({
   params,
   searchParams,
@@ -145,9 +147,10 @@ export default async function EditShiftPage({
 
   // Format existing assignments for the component
   // Group assignments by vehicle_id
-  const vehicleMap = new Map();
-  const vehicleKeyToConfig = new Map();
-  vehicles?.forEach((v) => {
+  const vehicleList = (vehicles ?? []) as VehicleConfigRow[];
+  const vehicleMap = new Map<string, string>();
+  const vehicleKeyToConfig = new Map<string, VehicleConfigRow>();
+  vehicleList.forEach((v) => {
     vehicleMap.set(v.key, v.id);
     vehicleKeyToConfig.set(v.key, v);
   });
@@ -349,7 +352,7 @@ export default async function EditShiftPage({
         </Card>
 
         <ShiftAssignmentComplete
-          vehicles={vehicles || []}
+          vehicles={vehicleList}
           people={people || []}
           initialAssignments={existingAssignments}
           initialCopiedTrupps={existingCopiedTrupps}
