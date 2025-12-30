@@ -37,7 +37,7 @@ export async function createVehicle(formData: FormData) {
     console.log('[createVehicle] Received data:', { key, title, configStringLength: configString?.length });
 
     if (!key || !title || !configString) {
-        return redirect('/admin/vehicles?error=Alle Felder sind erforderlich.');
+        return redirect('/app/vehicles?error=Alle Felder sind erforderlich.');
     }
 
     // Validate JSON
@@ -47,7 +47,7 @@ export async function createVehicle(formData: FormData) {
         console.log('[createVehicle] Parsed config:', config);
     } catch (e) {
         console.error('[createVehicle] JSON parse error:', e);
-        return redirect('/admin/vehicles?error=Ungültiges JSON-Format.');
+        return redirect('/app/vehicles?error=Ungültiges JSON-Format.');
     }
 
     // Get user's station and verify admin
@@ -58,7 +58,7 @@ export async function createVehicle(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/vehicles?error=Keine Berechtigung.');
+        return redirect('/app/vehicles?error=Keine Berechtigung.');
     }
 
     // Get current max order
@@ -73,7 +73,7 @@ export async function createVehicle(formData: FormData) {
     const newOrder = maxOrderVehicle ? maxOrderVehicle.order + 1 : 0;
 
         const resolvedImageUrl =
-            (await handleVehiclePhotoUpload(imageFile, membership.station_id, "/admin/vehicles")) ??
+            (await handleVehiclePhotoUpload(imageFile, membership.station_id, "/app/vehicles")) ??
             (imageUrlInput ?? null);
 
     // Create vehicle
@@ -100,13 +100,13 @@ export async function createVehicle(formData: FormData) {
     if (error) {
         console.error('[createVehicle] Database error:', error);
         if (error.code === '23505') {
-            return redirect('/admin/vehicles?error=Ein Fahrzeug mit diesem Schlüssel existiert bereits.');
+            return redirect('/app/vehicles?error=Ein Fahrzeug mit diesem Schlüssel existiert bereits.');
         }
-        return redirect(`/admin/vehicles?error=${encodeURIComponent(`Fehler beim Erstellen des Fahrzeugs: ${error.message}`)}`);
+        return redirect(`/app/vehicles?error=${encodeURIComponent(`Fehler beim Erstellen des Fahrzeugs: ${error.message}`)}`);
     }
 
-    revalidatePath('/admin/vehicles');
-    redirect('/admin/vehicles?success=Fahrzeug erfolgreich erstellt.');
+    revalidatePath('/app/vehicles');
+    redirect('/app/vehicles?success=Fahrzeug erfolgreich erstellt.');
 }
 
 export async function deleteVehicle(formData: FormData) {
@@ -120,7 +120,7 @@ export async function deleteVehicle(formData: FormData) {
     const vehicleId = formData.get('vehicleId') as string;
 
     if (!vehicleId) {
-        return redirect('/admin/vehicles?error=Fahrzeug nicht gefunden.');
+        return redirect('/app/vehicles?error=Fahrzeug nicht gefunden.');
     }
 
     // Get user's station and verify admin
@@ -131,7 +131,7 @@ export async function deleteVehicle(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/vehicles?error=Keine Berechtigung.');
+        return redirect('/app/vehicles?error=Keine Berechtigung.');
     }
 
     // Verify vehicle belongs to user's station
@@ -142,7 +142,7 @@ export async function deleteVehicle(formData: FormData) {
         .single();
 
     if (!vehicle || vehicle.station_id !== membership.station_id) {
-        return redirect('/admin/vehicles?error=Fahrzeug nicht gefunden.');
+        return redirect('/app/vehicles?error=Fahrzeug nicht gefunden.');
     }
 
     // Delete vehicle
@@ -153,11 +153,11 @@ export async function deleteVehicle(formData: FormData) {
 
     if (error) {
         console.error('Error deleting vehicle:', error);
-        return redirect(`/admin/vehicles?error=${encodeURIComponent('Fehler beim Löschen des Fahrzeugs.')}`);
+        return redirect(`/app/vehicles?error=${encodeURIComponent('Fehler beim Löschen des Fahrzeugs.')}`);
     }
 
-    revalidatePath('/admin/vehicles');
-    redirect('/admin/vehicles?success=Fahrzeug erfolgreich gelöscht.');
+    revalidatePath('/app/vehicles');
+    redirect('/app/vehicles?success=Fahrzeug erfolgreich gelöscht.');
 }
 
 export async function updateVehicleOrder(formData: FormData) {
@@ -172,7 +172,7 @@ export async function updateVehicleOrder(formData: FormData) {
     const direction = formData.get('direction') as string;
 
     if (!vehicleId || !direction) {
-        return redirect('/admin/vehicles?error=Fehlende Parameter.');
+        return redirect('/app/vehicles?error=Fehlende Parameter.');
     }
 
     // Get user's station and verify admin
@@ -183,7 +183,7 @@ export async function updateVehicleOrder(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/vehicles?error=Keine Berechtigung.');
+        return redirect('/app/vehicles?error=Keine Berechtigung.');
     }
 
     // Get current vehicle
@@ -195,7 +195,7 @@ export async function updateVehicleOrder(formData: FormData) {
         .single();
 
     if (!vehicle) {
-        return redirect('/admin/vehicles?error=Fahrzeug nicht gefunden.');
+        return redirect('/app/vehicles?error=Fahrzeug nicht gefunden.');
     }
 
     // Get all vehicles to reorder
@@ -206,14 +206,14 @@ export async function updateVehicleOrder(formData: FormData) {
         .order('order', { ascending: true });
 
     if (!vehicles) {
-        return redirect('/admin/vehicles?error=Fehler beim Laden der Fahrzeuge.');
+        return redirect('/app/vehicles?error=Fehler beim Laden der Fahrzeuge.');
     }
 
     const currentIndex = vehicles.findIndex(v => v.id === vehicleId);
     const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
 
     if (newIndex < 0 || newIndex >= vehicles.length) {
-        return redirect('/admin/vehicles');
+        return redirect('/app/vehicles');
     }
 
     // Swap orders
@@ -232,8 +232,8 @@ export async function updateVehicleOrder(formData: FormData) {
         .update({ order: vehicles[newIndex].order })
         .eq('id', vehicles[newIndex].id);
 
-    revalidatePath('/admin/vehicles');
-    redirect('/admin/vehicles');
+    revalidatePath('/app/vehicles');
+    redirect('/app/vehicles');
 }
 
 export async function updateVehicle(formData: FormData) {
@@ -252,14 +252,14 @@ export async function updateVehicle(formData: FormData) {
     const imageFile = formData.get('image_file') as File | null;
 
     if (!vehicleId || !key || !title || !configString) {
-        return redirect('/admin/vehicles?error=Alle Felder sind erforderlich.');
+        return redirect('/app/vehicles?error=Alle Felder sind erforderlich.');
     }
 
     let config;
     try {
         config = JSON.parse(configString);
     } catch (e) {
-        return redirect('/admin/vehicles?error=Ungültiges JSON-Format.');
+        return redirect('/app/vehicles?error=Ungültiges JSON-Format.');
     }
 
     const { data: membership } = await supabase
@@ -269,7 +269,7 @@ export async function updateVehicle(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/vehicles?error=Keine Berechtigung.');
+        return redirect('/app/vehicles?error=Keine Berechtigung.');
     }
 
     const { data: vehicle } = await supabase
@@ -279,7 +279,7 @@ export async function updateVehicle(formData: FormData) {
         .single();
 
     if (!vehicle || vehicle.station_id !== membership.station_id) {
-        return redirect('/admin/vehicles?error=Fahrzeug nicht gefunden.');
+        return redirect('/app/vehicles?error=Fahrzeug nicht gefunden.');
     }
 
     const { data: duplicate } = await supabase
@@ -292,11 +292,11 @@ export async function updateVehicle(formData: FormData) {
         .single();
 
     if (duplicate) {
-        return redirect('/admin/vehicles?error=Ein Fahrzeug mit diesem Schlüssel existiert bereits.');
+        return redirect('/app/vehicles?error=Ein Fahrzeug mit diesem Schlüssel existiert bereits.');
     }
 
         const resolvedImageUrl =
-            (await handleVehiclePhotoUpload(imageFile, membership.station_id, "/admin/vehicles")) ??
+            (await handleVehiclePhotoUpload(imageFile, membership.station_id, "/app/vehicles")) ??
             (imageUrlInput ?? null);
 
     const { error } = await supabase
@@ -312,11 +312,11 @@ export async function updateVehicle(formData: FormData) {
     if (error) {
         console.error('Error updating vehicle:', error);
         if (error.code === '23505') {
-            return redirect('/admin/vehicles?error=Ein Fahrzeug mit diesem Schlüssel existiert bereits.');
+            return redirect('/app/vehicles?error=Ein Fahrzeug mit diesem Schlüssel existiert bereits.');
         }
-        return redirect(`/admin/vehicles?error=${encodeURIComponent('Fehler beim Aktualisieren des Fahrzeugs.')}`);
+        return redirect(`/app/vehicles?error=${encodeURIComponent('Fehler beim Aktualisieren des Fahrzeugs.')}`);
     }
 
-    revalidatePath('/admin/vehicles');
-    redirect('/admin/vehicles?success=Fahrzeug erfolgreich aktualisiert.');
+    revalidatePath('/app/vehicles');
+    redirect('/app/vehicles?success=Fahrzeug erfolgreich aktualisiert.');
 }

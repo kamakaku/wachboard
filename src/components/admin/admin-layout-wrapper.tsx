@@ -5,9 +5,11 @@ import { AdminSidebar } from "@/components/admin/admin-sidebar";
 
 type AdminLayoutWrapperProps = {
   children: React.ReactNode;
+  userRole: string;
+  divisionIds: string[];
 };
 
-export function AdminLayoutWrapper({ children }: AdminLayoutWrapperProps) {
+export function AdminLayoutWrapper({ children, userRole, divisionIds }: AdminLayoutWrapperProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
@@ -19,7 +21,12 @@ export function AdminLayoutWrapper({ children }: AdminLayoutWrapperProps) {
         }`}
         style={{ top: '64px', height: 'calc(100vh - 64px)' }}
       >
-        <AdminSidebar isCollapsed={!sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+        <AdminSidebar
+          isCollapsed={!sidebarOpen}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+          userRole={userRole}
+          divisionIds={divisionIds}
+        />
       </div>
 
       {/* Content wrapper with left margin */}

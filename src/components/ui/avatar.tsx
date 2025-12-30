@@ -24,7 +24,7 @@ export function Avatar({ src, name, size = 36, className }: AvatarProps) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-full bg-muted text-muted-foreground/70 flex items-center justify-center border border-border",
+        "relative overflow-hidden rounded-full bg-muted text-muted-foreground/70 flex items-center justify-center border border-border flex-shrink-0",
         className
       )}
       style={{ width: size, height: size }}
@@ -35,10 +35,11 @@ export function Avatar({ src, name, size = 36, className }: AvatarProps) {
           alt={name ?? "Avatar"}
           width={size}
           height={size}
-          className="object-cover"
+          className="object-cover w-full h-full"
+          unoptimized
         />
       ) : (
-        <span className="text-xs font-semibold">{initials || "?"}</span>
+        <span style={{ fontSize: size * 0.4 }} className="font-semibold">{initials || "?"}</span>
       )}
     </div>
   );

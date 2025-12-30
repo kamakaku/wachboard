@@ -1,172 +1,194 @@
 {
   "node": {
-    "224786e73ae99791ee2081514241c01b03d7e1f2": {
-      "workers": {
-        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/shifts/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/people/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
-      },
-      "layer": {
-        "app/(main)/app/page": "rsc",
-        "app/(main)/admin/page": "rsc",
-        "app/(main)/admin/settings/page": "rsc",
-        "app/(main)/admin/shifts/page": "rsc",
-        "app/(main)/admin/shifts/new/page": "rsc",
-        "app/(main)/admin/people/page": "rsc"
-      }
-    },
-    "2c667f50d9672450ffb9c7cc219224fdfd19874c": {
-      "workers": {
-        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/shifts/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/people/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
-      },
-      "layer": {
-        "app/(main)/app/page": "rsc",
-        "app/(main)/admin/page": "rsc",
-        "app/(main)/admin/settings/page": "rsc",
-        "app/(main)/admin/shifts/page": "rsc",
-        "app/(main)/admin/shifts/new/page": "rsc",
-        "app/(main)/admin/people/page": "rsc"
-      }
-    },
-    "7aa99930817149a187f1a871bbaf702dea9ea495": {
-      "workers": {
-        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/settings/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/shifts/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
-        "app/(main)/admin/people/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
-      },
-      "layer": {
-        "app/(main)/app/page": "rsc",
-        "app/(main)/admin/page": "rsc",
-        "app/(main)/admin/settings/page": "rsc",
-        "app/(main)/admin/shifts/page": "rsc",
-        "app/(main)/admin/shifts/new/page": "rsc",
-        "app/(main)/admin/people/page": "rsc"
-      }
-    },
     "4ca3e45e59d17eb24834057aa663cd58822f0362": {
       "workers": {
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/page": "rsc"
+        "app/(main)/app/page": "rsc"
       }
     },
     "64819fdbf6747c9de70c4f6c789726e25ed33dab": {
       "workers": {
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/page": "rsc"
+        "app/(main)/app/page": "rsc"
       }
     },
     "7718239856a5ecd6b6dd9302e4f387114b4eed56": {
       "workers": {
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/page": "rsc"
+        "app/(main)/app/page": "rsc"
       }
     },
     "935a02ff5ad3f32514a031e75fad6c1a300ce60f": {
       "workers": {
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/page": "rsc"
+        "app/(main)/app/page": "rsc"
+      }
+    },
+    "952f7879cdccaeee0d550ce745157068cc57c2fa": {
+      "workers": {
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/(main)/app/page": "rsc"
       }
     },
     "cb7bd06c1d01ccb171f3a399726de42085eec918": {
       "workers": {
-        "app/(main)/admin/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/page": "rsc"
+        "app/(main)/app/page": "rsc"
       }
     },
-    "2e124e30c7c31a4bfdd0cb39a66624d7bea23a7e": {
+    "224786e73ae99791ee2081514241c01b03d7e1f2": {
       "workers": {
-        "app/(main)/admin/settings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fsettings.actions.ts%22%2C%5B%22updateShiftTemplate%22%2C%22updateScheduleCycle%22%2C%22deleteShiftTemplate%22%2C%22createShiftTemplate%22%5D%5D%5D&__client_imported__=true!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/people/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/settings/page": "action-browser"
+        "app/(main)/app/page": "rsc",
+        "app/(main)/app/shifts/page": "rsc",
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/people/page": "rsc"
       }
     },
-    "34f87cb5195f8c989918acee1b41f961467a3a2d": {
+    "2c667f50d9672450ffb9c7cc219224fdfd19874c": {
       "workers": {
-        "app/(main)/admin/settings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fsettings.actions.ts%22%2C%5B%22updateShiftTemplate%22%2C%22updateScheduleCycle%22%2C%22deleteShiftTemplate%22%2C%22createShiftTemplate%22%5D%5D%5D&__client_imported__=true!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/people/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/settings/page": "action-browser"
+        "app/(main)/app/page": "rsc",
+        "app/(main)/app/shifts/page": "rsc",
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/people/page": "rsc"
       }
     },
-    "acb41ad9dbf615412596f4c67fc7f1639b432943": {
+    "7aa99930817149a187f1a871bbaf702dea9ea495": {
       "workers": {
-        "app/(main)/admin/settings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fsettings.actions.ts%22%2C%5B%22updateShiftTemplate%22%2C%22updateScheduleCycle%22%2C%22deleteShiftTemplate%22%2C%22createShiftTemplate%22%5D%5D%5D&__client_imported__=true!"
+        "app/(main)/app/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fstation.actions.ts%22%2C%5B%22rejectJoinRequest%22%2C%22getAllStations%22%2C%22acceptJoinRequest%22%2C%22createStationAndBecomeAdmin%22%2C%22inviteUserByEmail%22%2C%22requestToJoinStation%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/people/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
       },
       "layer": {
-        "app/(main)/admin/settings/page": "action-browser"
-      }
-    },
-    "c9b665abc2b1c253c76f586f333e66c9e5020c79": {
-      "workers": {
-        "app/(main)/admin/settings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fsettings.actions.ts%22%2C%5B%22updateShiftTemplate%22%2C%22updateScheduleCycle%22%2C%22deleteShiftTemplate%22%2C%22createShiftTemplate%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/(main)/admin/settings/page": "action-browser"
+        "app/(main)/app/page": "rsc",
+        "app/(main)/app/shifts/page": "rsc",
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/people/page": "rsc"
       }
     },
     "3bb8a52f1e6d2cb5f65b2a70af5d9492fc3cff63": {
       "workers": {
-        "app/(main)/admin/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!"
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/(main)/admin/shifts/new/page": "rsc"
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/shifts/page": "action-browser"
+      }
+    },
+    "659765dc11ec3a57dc068050cea924c240e50f05": {
+      "workers": {
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/shifts/page": "action-browser"
+      }
+    },
+    "e04c74f5e7dd9916d243e6d59f930efd6e33927a": {
+      "workers": {
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/shifts/page": "action-browser"
+      }
+    },
+    "c0b7ffaff5ba9109e9722ecc16fbcb69f6dc93df": {
+      "workers": {
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/shifts/page": "action-browser"
+      }
+    },
+    "926a037a3539bd2b228bd1f6c613d88928e0c6ef": {
+      "workers": {
+        "app/(main)/app/shifts/new/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/[id]/edit/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%2C%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fauth.actions.ts%22%2C%5B%22login%22%2C%22logout%22%2C%22signup%22%5D%5D%5D&__client_imported__=!",
+        "app/(main)/app/shifts/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fshifts.actions.ts%22%2C%5B%22createShift%22%2C%22updateShift%22%2C%22deleteShift%22%2C%22duplicateShift%22%2C%22updateShiftComplete%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/(main)/app/shifts/new/page": "rsc",
+        "app/(main)/app/shifts/[id]/edit/page": "rsc",
+        "app/(main)/app/shifts/page": "action-browser"
       }
     },
     "3c23ca4f3b1355dcffd51127db94351e84048094": {
       "workers": {
-        "app/(main)/admin/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
+        "app/(main)/app/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/(main)/admin/people/page": "action-browser"
+        "app/(main)/app/people/page": "action-browser"
       }
     },
     "51ac06d73d972e6d089fb92838fafb0e3eb4f35a": {
       "workers": {
-        "app/(main)/admin/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
+        "app/(main)/app/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/(main)/admin/people/page": "action-browser"
+        "app/(main)/app/people/page": "action-browser"
       }
     },
     "b1897e0005cd0d3c17d944a4cd8116b179a1fc62": {
       "workers": {
-        "app/(main)/admin/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
+        "app/(main)/app/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/(main)/admin/people/page": "action-browser"
+        "app/(main)/app/people/page": "action-browser"
       }
     },
     "ba721a7a72a294373b964663b4806a847fb58b81": {
       "workers": {
-        "app/(main)/admin/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
+        "app/(main)/app/people/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fkamakaku%2F_desiqn%2F__wachboard%2Fsrc%2Flib%2Factions%2Fpeople.actions.ts%22%2C%5B%22togglePersonActive%22%2C%22deletePerson%22%2C%22updatePerson%22%2C%22createPerson%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/(main)/admin/people/page": "action-browser"
+        "app/(main)/app/people/page": "action-browser"
       }
     }
   },
   "edge": {},
-  "encryptionKey": "wc5zuaZ78hznLMqCT9uWvQaYscdxaCyu+yAQJFZea/A="
+  "encryptionKey": "ptNdUSsMcF7wFg+qNx7kGUM5PTlfRZWjUZetCZ59nDM="
 }

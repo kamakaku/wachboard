@@ -21,45 +21,30 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(main)/admin/page": [
+    "/(main)/app/shifts/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(main)/admin/page.js"
+      "static/chunks/app/(main)/app/shifts/page.js"
     ],
-    "/(main)/admin/layout": [
+    "/(main)/app/shifts/[id]/edit/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(main)/admin/layout.js"
+      "static/chunks/app/(main)/app/shifts/[id]/edit/page.js"
     ],
-    "/(main)/admin/settings/page": [
+    "/(main)/app/shifts/new/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(main)/admin/settings/page.js"
+      "static/chunks/app/(main)/app/shifts/new/page.js"
     ],
-    "/(main)/admin/shifts/page": [
+    "/(main)/app/people/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(main)/admin/shifts/page.js"
-    ],
-    "/(main)/admin/shifts/new/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(main)/admin/shifts/new/page.js"
+      "static/chunks/app/(main)/app/people/page.js"
     ],
     "/display/[stationId]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/display/[stationId]/page.js"
-    ],
-    "/(main)/admin/people/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(main)/admin/people/page.js"
-    ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

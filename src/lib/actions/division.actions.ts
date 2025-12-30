@@ -16,7 +16,7 @@ export async function createDivision(formData: FormData) {
     const color = formData.get('color') as string;
 
     if (!name || name.trim() === '') {
-        return redirect('/admin/divisions?error=Name ist erforderlich.');
+        return redirect('/app/divisions?error=Name ist erforderlich.');
     }
 
     // Get user's station
@@ -27,7 +27,7 @@ export async function createDivision(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/divisions?error=Keine Berechtigung.');
+        return redirect('/app/divisions?error=Keine Berechtigung.');
     }
 
     // Create division
@@ -41,11 +41,11 @@ export async function createDivision(formData: FormData) {
 
     if (error) {
         console.error('Error creating division:', error);
-        return redirect(`/admin/divisions?error=${encodeURIComponent('Fehler beim Erstellen der Division.')}`);
+        return redirect(`/app/divisions?error=${encodeURIComponent('Fehler beim Erstellen der Division.')}`);
     }
 
-    revalidatePath('/admin/divisions');
-    redirect('/admin/divisions?success=Division erfolgreich erstellt.');
+    revalidatePath('/app/divisions');
+    redirect('/app/divisions?success=Division erfolgreich erstellt.');
 }
 
 export async function deleteDivision(formData: FormData) {
@@ -59,7 +59,7 @@ export async function deleteDivision(formData: FormData) {
     const divisionId = formData.get('divisionId') as string;
 
     if (!divisionId) {
-        return redirect('/admin/divisions?error=Division nicht gefunden.');
+        return redirect('/app/divisions?error=Division nicht gefunden.');
     }
 
     // Get user's station and verify admin
@@ -70,7 +70,7 @@ export async function deleteDivision(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/divisions?error=Keine Berechtigung.');
+        return redirect('/app/divisions?error=Keine Berechtigung.');
     }
 
     // Verify division belongs to user's station
@@ -81,7 +81,7 @@ export async function deleteDivision(formData: FormData) {
         .single();
 
     if (!division || division.station_id !== membership.station_id) {
-        return redirect('/admin/divisions?error=Division nicht gefunden.');
+        return redirect('/app/divisions?error=Division nicht gefunden.');
     }
 
     // Delete division
@@ -92,9 +92,9 @@ export async function deleteDivision(formData: FormData) {
 
     if (error) {
         console.error('Error deleting division:', error);
-        return redirect(`/admin/divisions?error=${encodeURIComponent('Fehler beim Löschen der Division. Möglicherweise wird sie noch verwendet.')}`);
+        return redirect(`/app/divisions?error=${encodeURIComponent('Fehler beim Löschen der Division. Möglicherweise wird sie noch verwendet.')}`);
     }
 
-    revalidatePath('/admin/divisions');
-    redirect('/admin/divisions?success=Division erfolgreich gelöscht.');
+    revalidatePath('/app/divisions');
+    redirect('/app/divisions?success=Division erfolgreich gelöscht.');
 }

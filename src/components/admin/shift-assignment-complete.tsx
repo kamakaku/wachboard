@@ -46,9 +46,29 @@ type Vehicle = {
 type ShiftAssignmentProps = {
   vehicles: Vehicle[];
   people: Person[];
+  initialAssignments?: {
+    [vehicleId: string]: {
+      [slotKey: string]: string | null;
+    };
+  };
+  initialCopiedTrupps?: {
+    [vehicleId: string]: Array<{
+      sourceVehicleId: string;
+      sourceTruppKey: string;
+      targetTruppKey: string;
+    }>;
+  };
+  initialPraktikantFlags?: {
+    [vehicleId: string]: boolean;
+  };
+  initialTruppPraktikantFlags?: {
+    [vehicleId: string]: {
+      [truppKey: string]: boolean;
+    };
+  };
 };
 
-export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentProps) {
+export function ShiftAssignmentComplete({ vehicles, people, initialAssignments, initialCopiedTrupps, initialPraktikantFlags, initialTruppPraktikantFlags }: ShiftAssignmentProps) {
   // Filter people by type
   const mitarbeiter = people.filter(p => !p.person_type || p.person_type === 'MITARBEITER');
   const notarzte = people.filter(p => p.person_type === 'NOTARZT');
@@ -59,7 +79,7 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
     [vehicleId: string]: {
       [slotKey: string]: string | null;
     };
-  }>({});
+  }>(initialAssignments || {});
 
   // Copied trupps - trupps from other vehicles
   const [copiedTrupps, setCopiedTrupps] = useState<{
@@ -68,12 +88,22 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
       sourceTruppKey: string;
       targetTruppKey: string;
     }>;
-  }>({});
+  }>(initialCopiedTrupps || {});
 
-  // Praktikant flags per vehicle
+  // Praktikant flags per vehicle (general vehicle praktikant)
   const [praktikantFlags, setPraktikantFlags] = useState<{
     [vehicleId: string]: boolean;
-  }>({});
+  }>(initialPraktikantFlags || {});
+
+  // Praktikant flags per trupp (specific trupp praktikant)
+  const [truppPraktikantFlags, setTruppPraktikantFlags] = useState<{
+    [vehicleId: string]: {
+      [truppKey: string]: boolean;
+    };
+  }>(initialTruppPraktikantFlags || {});
+
+  // Hidden slots - slots that have been explicitly hidden by the user
+  const [hiddenSlots, setHiddenSlots] = useState<Set<string>>(new Set());
 
   // Drag state
   const [draggedPerson, setDraggedPerson] = useState<Person | null>(null);
@@ -128,6 +158,18 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
       default:
         return mitarbeiter;
     }
+  };
+
+  const hideSlot = (vehicleId: string, slotKey: string) => {
+    const slotIdentifier = `${vehicleId}:${slotKey}`;
+    setHiddenSlots(prev => new Set(prev).add(slotIdentifier));
+    // Also remove any assignment from this slot
+    assignPerson(vehicleId, slotKey, null);
+  };
+
+  const isSlotHidden = (vehicleId: string, slotKey: string): boolean => {
+    const slotIdentifier = `${vehicleId}:${slotKey}`;
+    return hiddenSlots.has(slotIdentifier);
   };
 
   // Trupp copying
@@ -203,6 +245,16 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
     }
     setDraggedTrupp(null);
   };
+
+  // Debug: Log assignments before render
+  console.log('ShiftAssignmentComplete render - assignments:', assignments);
+  console.log('ShiftAssignmentComplete render - copiedTrupps:', copiedTrupps);
+  console.log('ShiftAssignmentComplete render - praktikantFlags:', praktikantFlags);
+  console.log('ShiftAssignmentComplete render - truppPraktikantFlags:', truppPraktikantFlags);
+  console.log('ShiftAssignmentComplete render - assignments JSON:', JSON.stringify(assignments));
+  console.log('ShiftAssignmentComplete render - copiedTrupps JSON:', JSON.stringify(copiedTrupps));
+  console.log('ShiftAssignmentComplete render - praktikantFlags JSON:', JSON.stringify(praktikantFlags));
+  console.log('ShiftAssignmentComplete render - truppPraktikantFlags JSON:', JSON.stringify(truppPraktikantFlags));
 
   return (
     <div className="space-y-6">
@@ -304,7 +356,7 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
                         Führung
                       </Badge>
                     )}
-                    {vehicle.config.allowsPraktikant && (
+                    {vehicle.config.allowsPraktikant && (!vehicle.config.trupps || vehicle.config.trupps.length === 0) && (
                       <div className="flex items-center gap-2">
                         <Checkbox
                           id={`praktikant-${vehicle.id}`}
@@ -470,9 +522,11 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
                                     className="space-y-1"
                                     onDragOver={handleDragOver}
                                     onDrop={(e) => {
-                                      // Assign to copied trupp on current vehicle
-                                      const targetSlotKey = `${copied.targetTruppKey}:${slotName}`;
-                                      handleDropOnSlot(e, vehicle.id, targetSlotKey);
+                                      // IMPORTANT: Store assignment in SOURCE vehicle, not target!
+                                      // This is because the UI reads from source and the server action
+                                      // copies assignments from source to target when saving
+                                      const sourceSlotKey = `${copied.sourceTruppKey}:${slotName}`;
+                                      handleDropOnSlot(e, copied.sourceVehicleId, sourceSlotKey);
                                     }}
                                   >
                                     <label className="text-[10px] text-muted-foreground">{slotName}</label>
@@ -541,24 +595,49 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
                         key={trupp.key}
                         className="border rounded-lg p-4 bg-muted/30"
                       >
-                        <div
-                          className="flex items-center gap-2 mb-3 cursor-move select-none"
-                          draggable
-                          onDragStart={(e) => {
-                            e.stopPropagation();
-                            handleTruppDragStart(e, vehicle.id, trupp.key);
-                          }}
-                        >
-                          <GripVertical
-                            className="h-4 w-4 text-muted-foreground"
-                          />
-                          <h4 className="font-semibold text-sm">{trupp.key}</h4>
+                        <div className="flex items-center gap-2 mb-3">
+                          <div
+                            className="flex items-center gap-2 cursor-move select-none flex-1"
+                            draggable
+                            onDragStart={(e) => {
+                              e.stopPropagation();
+                              handleTruppDragStart(e, vehicle.id, trupp.key);
+                            }}
+                          >
+                            <GripVertical
+                              className="h-4 w-4 text-muted-foreground"
+                            />
+                            <h4 className="font-semibold text-sm">{trupp.key}</h4>
+                            {trupp.allowsPraktikant && (
+                              <Badge variant="outline" className="text-xs">+Praktikant</Badge>
+                            )}
+                          </div>
                           {trupp.allowsPraktikant && (
-                            <Badge variant="outline" className="text-xs">+Praktikant</Badge>
+                            <div className="flex items-center gap-2">
+                              <Checkbox
+                                id={`trupp-praktikant-${vehicle.id}-${trupp.key}`}
+                                checked={truppPraktikantFlags[vehicle.id]?.[trupp.key] || false}
+                                onCheckedChange={(checked) =>
+                                  setTruppPraktikantFlags(prev => ({
+                                    ...prev,
+                                    [vehicle.id]: {
+                                      ...(prev[vehicle.id] || {}),
+                                      [trupp.key]: checked === true
+                                    }
+                                  }))
+                                }
+                              />
+                              <Label htmlFor={`trupp-praktikant-${vehicle.id}-${trupp.key}`} className="text-xs cursor-pointer">
+                                Praktikant
+                              </Label>
+                            </div>
                           )}
                         </div>
                         <div className="grid grid-cols-2 gap-2">
-                          {trupp.slots.map((slotName) => {
+                          {trupp.slots.filter(slotName => {
+                            const slotKey = `${trupp.key}:${slotName}`;
+                            return !isSlotHidden(vehicle.id, slotKey);
+                          }).map((slotName) => {
                             const slotKey = `${trupp.key}:${slotName}`;
                             const assignedPerson = getAssignedPerson(vehicle.id, slotKey);
 
@@ -604,7 +683,7 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
                                         type="button"
                                         variant="ghost"
                                         size="sm"
-                                        onClick={() => assignPerson(vehicle.id, slotKey, null)}
+                                        onClick={() => hideSlot(vehicle.id, slotKey)}
                                         className="h-5 w-5 p-0 absolute top-1 right-1"
                                         title="Slot für diesen Dienstplan ausblenden"
                                       >
@@ -627,7 +706,7 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
                   <div className="space-y-2">
                     <h4 className="font-semibold text-sm">Einzelne Positionen</h4>
                     <div className="grid grid-cols-2 gap-2">
-                      {vehicle.config.slots.map((slotName) => {
+                      {vehicle.config.slots.filter(slotName => !isSlotHidden(vehicle.id, slotName)).map((slotName) => {
                         const slotKey = slotName;
                         const assignedPerson = getAssignedPerson(vehicle.id, slotKey);
 
@@ -673,7 +752,7 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
                                     type="button"
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => assignPerson(vehicle.id, slotKey, null)}
+                                    onClick={() => hideSlot(vehicle.id, slotKey)}
                                     className="h-5 w-5 p-0 absolute top-1 right-1"
                                     title="Slot für diesen Dienstplan ausblenden"
                                   >
@@ -695,9 +774,34 @@ export function ShiftAssignmentComplete({ vehicles, people }: ShiftAssignmentPro
       </div>
 
       {/* Hidden inputs */}
-      <input type="hidden" name="assignments" value={JSON.stringify(assignments)} />
-      <input type="hidden" name="copiedTrupps" value={JSON.stringify(copiedTrupps)} />
-      <input type="hidden" name="praktikantFlags" value={JSON.stringify(praktikantFlags)} />
+      <input
+        type="hidden"
+        name="assignments"
+        value={JSON.stringify(assignments)}
+        data-debug="assignments-input"
+      />
+      <input
+        type="hidden"
+        name="copiedTrupps"
+        value={JSON.stringify(copiedTrupps)}
+        data-debug="trupps-input"
+      />
+      <input
+        type="hidden"
+        name="praktikantFlags"
+        value={JSON.stringify(praktikantFlags)}
+        data-debug="praktikant-input"
+      />
+      <input
+        type="hidden"
+        name="truppPraktikantFlags"
+        value={JSON.stringify(truppPraktikantFlags)}
+        data-debug="trupp-praktikant-input"
+      />
+      {/* Debug output */}
+      <div style={{ display: 'none' }} data-debug-assignments={JSON.stringify(assignments).substring(0, 100)}>
+        Assignments count: {Object.keys(assignments).length}
+      </div>
     </div>
   );
 }

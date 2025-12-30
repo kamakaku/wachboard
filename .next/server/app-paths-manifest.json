@@ -1,9 +1,8 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/(main)/admin/settings/page": "app/(main)/admin/settings/page.js",
-  "/(main)/admin/shifts/new/page": "app/(main)/admin/shifts/new/page.js",
-  "/(main)/admin/page": "app/(main)/admin/page.js",
-  "/(main)/admin/people/page": "app/(main)/admin/people/page.js",
-  "/(main)/admin/shifts/page": "app/(main)/admin/shifts/page.js",
-  "/(main)/app/page": "app/(main)/app/page.js"
+  "/display/[stationId]/page": "app/display/[stationId]/page.js",
+  "/(main)/app/shifts/new/page": "app/(main)/app/shifts/new/page.js",
+  "/(main)/app/shifts/[id]/edit/page": "app/(main)/app/shifts/[id]/edit/page.js",
+  "/(main)/app/page": "app/(main)/app/page.js",
+  "/(main)/app/shifts/page": "app/(main)/app/shifts/page.js",
+  "/(main)/app/people/page": "app/(main)/app/people/page.js"
 }

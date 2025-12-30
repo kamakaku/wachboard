@@ -1,149 +1,190 @@
+import { acceptJoinRequest, rejectJoinRequest } from "@/lib/actions/station.actions";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Monitor } from "lucide-react";
 
-type DashboardShift = {
-  id: string;
-  starts_at: string;
-  ends_at: string;
-  label: string;
-  division: { name: string } | null;
-};
-
-export default async function AppDashboard() {
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: { error?: string; success?: string };
+}) {
   const supabase = createClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) { return redirect("/login"); }
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const { data: memberships, error } = await supabase
+  if (!user) {
+    redirect("/login");
+  }
+
+  // Get user's station and role
+  const { data: membership } = await supabase
     .from("memberships")
-    .select(`role, station:stations (id, name)`)
-    .eq("user_id", user.id);
+    .select("station_id, role")
+    .eq("user_id", user.id)
+    .single<{ station_id: string; role: string }>();
 
-  if (error) {
+  if (!membership) {
     return (
-      <Box sx={{ py: 4 }}>
-        <Alert severity="error">
-          <AlertTitle>Datenbankfehler</AlertTitle>
-          <Typography component="span" variant="body2" fontFamily="Menlo, monospace">
-            {error.message}
-          </Typography>
-        </Alert>
-      </Box>
+      <div className="py-8 px-6">
+        <Card className="border-destructive">
+          <CardHeader>
+            <CardTitle>Keine Wache zugewiesen</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Sie sind keiner Wache zugewiesen. Bitte kontaktieren Sie einen Administrator.</p>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
-  if (!memberships || memberships.length === 0) {
-    // User has no membership, redirect to onboarding
-    redirect('/onboarding');
-  }
+  const isAdmin = membership.role === "ADMIN";
 
-  // User has a membership, proceed as normal
-  const membership = memberships[0];
+  // Get pending join requests for this station (only for admins)
+  const { data: joinRequests } = isAdmin
+    ? await supabase
+        .from("join_requests")
+        .select("id, created_at, user:users_profile(id, email, name)")
+        .eq("station_id", membership.station_id)
+        .eq("status", "PENDING")
+        .order("created_at", { ascending: false })
+    : { data: [] };
 
-  const now = new Date();
-  const { data: shifts } = await supabase
-    .from('shifts')
-    .select('id, starts_at, ends_at, label, division:divisions(name)')
-    .eq('station_id', membership.station!.id)
-    .gt('ends_at', now.toISOString())
-    .order('starts_at', { ascending: true })
-    .limit(5);
-
-  const formatShiftTime = (startsAt: string, endsAt: string) => {
-    const starts = new Date(startsAt);
-    const ends = new Date(endsAt);
-    return `${starts.toLocaleString("de-DE")} – ${ends.toLocaleString("de-DE")}`;
-  };
+  // Get all divisions for the station
+  const { data: divisions } = await supabase
+    .from("divisions")
+    .select("id, name")
+    .eq("station_id", membership.station_id)
+    .order("name", { ascending: true });
 
   return (
-    <Stack spacing={4}>
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        alignItems="center"
-        justifyContent="space-between"
-        spacing={2}
-      >
-        <Box>
-          <Typography variant="h4" fontWeight="bold">
+    <div className="py-8 px-6">
+      <div className="mb-6 flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">
             Dashboard
-          </Typography>
-          <Typography color="text.secondary">
-            Willkommen, {user.email}. Wache: {membership.station!.name}
-          </Typography>
-        </Box>
-        <Stack direction="row" spacing={1}>
-          <Link href={`/display/${membership.station!.id}`} legacyBehavior>
-            <Button variant="outlined" component="span">
-              Display-Ansicht
-            </Button>
-          </Link>
-          {membership.role === "ADMIN" && (
-            <Link href="/admin" legacyBehavior>
-              <Button variant="contained" component="span">
-                Admin
-              </Button>
-            </Link>
-          )}
-        </Stack>
-      </Stack>
+            {membership.role === 'ADMIN' && <span className="text-sm font-normal text-muted-foreground ml-2">(Administrator)</span>}
+            {membership.role === 'EDITOR' && <span className="text-sm font-normal text-muted-foreground ml-2">(Editor)</span>}
+            {membership.role === 'VIEWER' && <span className="text-sm font-normal text-muted-foreground ml-2">(Ansicht)</span>}
+          </h1>
+          <p className="text-muted-foreground">
+            {membership.role === 'ADMIN' && 'Verwalten Sie Ihre Wache und delegieren Sie Rollen.'}
+            {membership.role === 'EDITOR' && 'Verwalten Sie Dienstpläne und Personal.'}
+            {membership.role === 'VIEWER' && 'Ansicht der Wache und Dienstpläne.'}
+          </p>
+        </div>
+        <Link href={`/display/${membership.station_id}`}>
+          <Button>
+            <Monitor className="h-4 w-4 mr-2" />
+            Display-Ansicht
+          </Button>
+        </Link>
+      </div>
 
-      <Card variant="outlined">
-        <CardHeader
-          title="Anstehende Dienste"
-          subheader="Dies sind die nächsten geplanten Dienste für Ihre Wache."
-        />
-        <Divider />
-        <CardContent>
-          {shifts && shifts.length > 0 ? (
-            <Stack spacing={2}>
-              {shifts.map((shift: DashboardShift) => (
-                <Card
-                  key={shift.id}
-                  variant="outlined"
-                  sx={{ backgroundColor: "background.default" }}
-                >
-                  <CardContent>
-                    <Grid container alignItems="center" spacing={2}>
-                      <Grid item xs>
-                        <Typography variant="subtitle1" fontWeight="medium">
-                          {shift.division?.name || "Unbekannte Division"}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {formatShiftTime(shift.starts_at, shift.ends_at)} ({shift.label})
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Link href={`/app/editor/${shift.id}`} legacyBehavior>
-                          <Button variant="contained" component="span">
-                            Bearbeiten
+      {searchParams.error && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertTitle>Fehler</AlertTitle>
+          <AlertDescription>{searchParams.error}</AlertDescription>
+        </Alert>
+      )}
+      {searchParams.success && (
+        <Alert className="mb-6 border-green-500">
+          <AlertTitle>Erfolg</AlertTitle>
+          <AlertDescription>{searchParams.success}</AlertDescription>
+        </Alert>
+      )}
+
+      {joinRequests && joinRequests.length > 0 && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Beitrittsanfragen</CardTitle>
+            <CardDescription>Neue Benutzer möchten Ihrer Wache beitreten.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Benutzer</TableHead>
+                  <TableHead>Datum</TableHead>
+                  <TableHead className="text-right">Aktionen</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {joinRequests.map((request: any) => (
+                  <TableRow key={request.id}>
+                    <TableCell>
+                      <div>
+                        <p className="font-medium">
+                          {request.user?.name || "Unbekannt"}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {request.user?.email}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {new Date(request.created_at).toLocaleDateString("de-DE")}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex gap-2 justify-end">
+                        <form action={acceptJoinRequest}>
+                          <input type="hidden" name="requestId" value={request.id} />
+                          <input type="hidden" name="role" value="VIEWER" />
+                          <Button type="submit" size="sm" variant="outline">
+                            Akzeptieren
                           </Button>
-                        </Link>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </Card>
-              ))}
-            </Stack>
-          ) : (
-            <Typography color="text.secondary">
-              Keine anstehenden Dienste gefunden. Ein Admin muss möglicherweise neue Dienste generieren.
-            </Typography>
-          )}
-        </CardContent>
-      </Card>
-    </Stack>
+                        </form>
+                        <form action={rejectJoinRequest}>
+                          <input type="hidden" name="requestId" value={request.id} />
+                          <Button type="submit" size="sm" variant="outline" className="text-destructive">
+                            Ablehnen
+                          </Button>
+                        </form>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Statistik</CardTitle>
+            <CardDescription>
+              Übersicht über Ihre Wache
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground text-sm">
+              Statistiken werden hier angezeigt
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }

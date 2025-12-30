@@ -31,7 +31,7 @@ export async function updateScheduleCycle(formData: FormData) {
     .single();
 
   if (!membership || membership.role !== "ADMIN") {
-    return redirect("/admin/divisions?error=Keine Berechtigung.");
+    return redirect("/app/divisions?error=Keine Berechtigung.");
   }
 
   const cleanOrder = divisionOrder.filter((id) => typeof id === "string");
@@ -48,9 +48,9 @@ export async function updateScheduleCycle(formData: FormData) {
 
   if (error) {
     console.error("Error updating schedule cycle:", error);
-    return redirect(`/admin/divisions?error=${encodeURIComponent("Fehler beim Speichern des Zyklus.")}`);
+    return redirect(`/app/divisions?error=${encodeURIComponent("Fehler beim Speichern des Zyklus.")}`);
   }
 
-  revalidatePath("/admin/divisions");
-  redirect("/admin/divisions?success=Zyklus erfolgreich gespeichert.");
+  revalidatePath("/app/divisions");
+  redirect("/app/divisions?success=Zyklus erfolgreich gespeichert.");
 }

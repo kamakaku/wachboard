@@ -15,15 +15,27 @@ type ShiftTemplate = {
 
 type ShiftTypeSelectorProps = {
   templates: ShiftTemplate[];
+  defaultStartTime?: string;
+  defaultEndTime?: string;
 };
 
-export function ShiftTypeSelector({ templates }: ShiftTypeSelectorProps) {
-  const defaultTemplate = templates[0];
+export function ShiftTypeSelector({ templates, defaultStartTime, defaultEndTime }: ShiftTypeSelectorProps) {
+  // Find matching template based on default times
+  const findMatchingTemplate = () => {
+    if (defaultStartTime && defaultEndTime) {
+      return templates.find(
+        (t) => t.start_time === defaultStartTime && t.end_time === defaultEndTime
+      );
+    }
+    return templates[0];
+  };
+
+  const matchingTemplate = findMatchingTemplate();
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(
-    defaultTemplate?.id || ""
+    matchingTemplate?.id || ""
   );
-  const [startTime, setStartTime] = useState(defaultTemplate?.start_time || "07:00");
-  const [endTime, setEndTime] = useState(defaultTemplate?.end_time || "19:00");
+  const [startTime, setStartTime] = useState(defaultStartTime || matchingTemplate?.start_time || "07:00");
+  const [endTime, setEndTime] = useState(defaultEndTime || matchingTemplate?.end_time || "19:00");
 
   const handleTemplateChange = (templateId: string) => {
     const template = templates.find((t) => t.id === templateId);
@@ -50,7 +62,7 @@ export function ShiftTypeSelector({ templates }: ShiftTypeSelectorProps) {
               name="start_time"
               type="time"
               required
-              defaultValue="07:00"
+              defaultValue={defaultStartTime || "07:00"}
             />
           </div>
           <div className="grid gap-2">
@@ -60,7 +72,7 @@ export function ShiftTypeSelector({ templates }: ShiftTypeSelectorProps) {
               name="end_time"
               type="time"
               required
-              defaultValue="19:00"
+              defaultValue={defaultEndTime || "19:00"}
             />
           </div>
         </div>

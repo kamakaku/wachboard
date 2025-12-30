@@ -139,15 +139,14 @@ export async function requestToJoinStation(formData: FormData) {
         return redirect('/onboarding?error=Keine Wache ausgewählt.');
     }
 
-    // 1. Check if user already has a membership
-    const { data: existingMembership } = await supabase
+    // 1. Check if user already has a membership for ANY station
+    const { data: existingMemberships } = await supabase
         .from('memberships')
-        .select('id')
-        .eq('user_id', user.id)
-        .limit(1)
-        .single();
+        .select('id, station_id')
+        .eq('user_id', user.id);
 
-    if (existingMembership) {
+    if (existingMemberships && existingMemberships.length > 0) {
+        // User already has a membership, redirect to app
         return redirect('/app');
     }
 
@@ -159,27 +158,55 @@ export async function requestToJoinStation(formData: FormData) {
         .single();
 
     if (stationError || !station) {
+        console.error('Station lookup error:', stationError);
         return redirect('/onboarding?error=Wache nicht gefunden.');
     }
 
-    // 3. Create join request
-    const { error: requestError } = await supabase
+    // 3. Check if user already has a pending request for this station
+    const { data: existingRequest } = await supabase
+        .from('join_requests')
+        .select('id, status')
+        .eq('user_id', user.id)
+        .eq('station_id', stationId)
+        .single();
+
+    if (existingRequest) {
+        if (existingRequest.status === 'PENDING') {
+            return redirect('/onboarding?success=Sie haben bereits eine ausstehende Anfrage für diese Wache.');
+        }
+        if (existingRequest.status === 'REJECTED') {
+            return redirect('/onboarding?error=Ihre Anfrage für diese Wache wurde abgelehnt. Bitte kontaktieren Sie einen Administrator.');
+        }
+    }
+
+    // 4. Create join request
+    const { data: insertData, error: requestError } = await supabase
         .from('join_requests')
         .insert({
             user_id: user.id,
             station_id: stationId,
             status: 'PENDING'
-        });
+        })
+        .select();
 
     if (requestError) {
         console.error('Error creating join request:', requestError);
+        console.error('Error details:', {
+            code: requestError.code,
+            message: requestError.message,
+            details: requestError.details,
+            hint: requestError.hint
+        });
+
         // Check if it's a duplicate request
         if (requestError.code === '23505') {
             return redirect('/onboarding?success=Sie haben bereits eine Anfrage für diese Wache gestellt.');
         }
-        return redirect(`/onboarding?error=${encodeURIComponent('Fehler beim Senden der Beitrittsanfrage.')}`);
+
+        return redirect(`/onboarding?error=${encodeURIComponent(`Fehler beim Senden der Beitrittsanfrage: ${requestError.message}`)}`);
     }
 
+    console.log('Join request created successfully:', insertData);
     redirect('/onboarding?success=Beitrittsanfrage gesendet! Warten Sie auf die Bestätigung eines Administrators.');
 }
 
@@ -214,12 +241,17 @@ export async function acceptJoinRequest(formData: FormData) {
     }
 
     const requestId = formData.get('requestId') as string;
-    const divisionId = formData.get('divisionId') as string | null;
+    const divisionIdsString = formData.get('divisionIds') as string;
     const role = formData.get('role') as string;
 
     if (!requestId || !role) {
-        return redirect('/admin?error=Fehlende Parameter.');
+        return redirect('/app/join-requests?error=Fehlende Parameter.');
     }
+
+    // Parse division IDs (comma-separated string to array)
+    const divisionIds = divisionIdsString && divisionIdsString.trim() !== ''
+        ? divisionIdsString.split(',').filter(id => id.trim() !== '')
+        : [];
 
     // 1. Get the join request
     const { data: request, error: requestError } = await supabase
@@ -229,7 +261,7 @@ export async function acceptJoinRequest(formData: FormData) {
         .single();
 
     if (requestError || !request) {
-        return redirect('/admin?error=Beitrittsanfrage nicht gefunden.');
+        return redirect('/app/join-requests?error=Beitrittsanfrage nicht gefunden.');
     }
 
     // 2. Verify user is admin of the station
@@ -241,23 +273,41 @@ export async function acceptJoinRequest(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin?error=Keine Berechtigung.');
+        return redirect('/app/join-requests?error=Keine Berechtigung.');
     }
 
-    // 3. Create membership
-    const { error: membershipError } = await supabase
+    // 3. Create membership with division_ids
+    const membershipData: any = {
+        user_id: request.user_id,
+        station_id: request.station_id,
+        role: role
+    };
+
+    // Only set division_ids for EDITOR role
+    if (role === 'EDITOR' && divisionIds.length > 0) {
+        membershipData.division_ids = divisionIds;
+        membershipData.division_id = divisionIds[0]; // Backward compatibility
+    }
+
+    console.log('Creating membership with data:', membershipData);
+
+    const { data: membershipResult, error: membershipError } = await supabase
         .from('memberships')
-        .insert({
-            user_id: request.user_id,
-            station_id: request.station_id,
-            division_id: divisionId,
-            role: role
-        });
+        .insert(membershipData)
+        .select();
 
     if (membershipError) {
         console.error('Error creating membership:', membershipError);
-        return redirect('/admin?error=Fehler beim Erstellen der Mitgliedschaft.');
+        console.error('Error details:', {
+            code: membershipError.code,
+            message: membershipError.message,
+            details: membershipError.details,
+            hint: membershipError.hint
+        });
+        return redirect(`/app/join-requests?error=${encodeURIComponent('Fehler beim Erstellen der Mitgliedschaft: ' + membershipError.message)}`);
     }
+
+    console.log('Membership created successfully:', membershipResult);
 
     // 4. Update join request status
     const { error: updateError } = await supabase
@@ -269,8 +319,9 @@ export async function acceptJoinRequest(formData: FormData) {
         console.error('Error updating join request:', updateError);
     }
 
-    revalidatePath('/admin');
-    redirect('/admin?success=Beitrittsanfrage akzeptiert.');
+    revalidatePath('/app/join-requests');
+    revalidatePath('/app/users');
+    redirect('/app/join-requests?success=Beitrittsanfrage akzeptiert.');
 }
 
 /**
@@ -321,9 +372,94 @@ export async function rejectJoinRequest(formData: FormData) {
 
     if (updateError) {
         console.error('Error updating join request:', updateError);
-        return redirect('/admin?error=Fehler beim Ablehnen der Anfrage.');
+        return redirect('/app/join-requests?error=Fehler beim Ablehnen der Anfrage.');
     }
 
-    revalidatePath('/admin');
-    redirect('/admin?success=Beitrittsanfrage abgelehnt.');
+    revalidatePath('/app/join-requests');
+    redirect('/app/join-requests?success=Beitrittsanfrage abgelehnt.');
+}
+
+/**
+ * Invite a user by email (Admin only)
+ * Creates a pending membership that the user can activate
+ */
+export async function inviteUserByEmail(formData: FormData) {
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+        throw new Error("User not authenticated.");
+    }
+
+    const email = formData.get('email') as string;
+    const role = formData.get('role') as string;
+    const divisionIdsString = formData.get('divisionIds') as string;
+
+    if (!email || !role) {
+        return redirect('/app/users?error=Fehlende Parameter.');
+    }
+
+    // Parse division IDs
+    const divisionIds = divisionIdsString && divisionIdsString.trim() !== ''
+        ? divisionIdsString.split(',').filter(id => id.trim() !== '')
+        : [];
+
+    // 1. Get admin's station
+    const { data: adminMembership } = await supabase
+        .from('memberships')
+        .select('station_id, role')
+        .eq('user_id', user.id)
+        .single();
+
+    if (!adminMembership || adminMembership.role !== 'ADMIN') {
+        return redirect('/app/users?error=Keine Berechtigung.');
+    }
+
+    // 2. Check if user with this email exists
+    const { data: targetUser } = await supabase
+        .from('users_profile')
+        .select('id')
+        .eq('email', email.toLowerCase().trim())
+        .single();
+
+    if (!targetUser) {
+        return redirect('/app/users?error=Kein Benutzer mit dieser E-Mail-Adresse gefunden. Der Benutzer muss sich zuerst registrieren.');
+    }
+
+    // 3. Check if user already has a membership for this station
+    const { data: existingMembership } = await supabase
+        .from('memberships')
+        .select('id')
+        .eq('user_id', targetUser.id)
+        .eq('station_id', adminMembership.station_id)
+        .single();
+
+    if (existingMembership) {
+        return redirect('/app/users?error=Benutzer ist bereits Mitglied dieser Wache.');
+    }
+
+    // 4. Create membership
+    const membershipData: any = {
+        user_id: targetUser.id,
+        station_id: adminMembership.station_id,
+        role: role
+    };
+
+    // Only set division_ids for EDITOR role
+    if (role === 'EDITOR' && divisionIds.length > 0) {
+        membershipData.division_ids = divisionIds;
+        membershipData.division_id = divisionIds[0]; // Backward compatibility
+    }
+
+    const { error: membershipError } = await supabase
+        .from('memberships')
+        .insert(membershipData);
+
+    if (membershipError) {
+        console.error('Error creating membership:', membershipError);
+        return redirect('/app/users?error=Fehler beim Hinzufügen des Benutzers.');
+    }
+
+    revalidatePath('/app/users');
+    redirect('/app/users?success=Benutzer erfolgreich hinzugefügt.');
 }

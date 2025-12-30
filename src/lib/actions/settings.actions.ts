@@ -17,7 +17,7 @@ export async function createShiftTemplate(formData: FormData) {
     const end_time = formData.get('end_time') as string;
 
     if (!label || !start_time || !end_time) {
-        return redirect('/admin/settings?error=Alle Felder sind erforderlich.');
+        return redirect('/app/settings?error=Alle Felder sind erforderlich.');
     }
 
     // Get user's station and verify admin
@@ -28,7 +28,7 @@ export async function createShiftTemplate(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/settings?error=Keine Berechtigung.');
+        return redirect('/app/settings?error=Keine Berechtigung.');
     }
 
     // Insert new shift template
@@ -44,13 +44,13 @@ export async function createShiftTemplate(formData: FormData) {
     if (error) {
         console.error('Error creating shift template:', error);
         if (error.code === '23505') { // Unique violation
-            return redirect(`/admin/settings?error=${encodeURIComponent('Eine Schicht mit diesem Namen existiert bereits.')}`);
+            return redirect(`/app/settings?error=${encodeURIComponent('Eine Schicht mit diesem Namen existiert bereits.')}`);
         }
-        return redirect(`/admin/settings?error=${encodeURIComponent('Fehler beim Erstellen der Schicht.')}`);
+        return redirect(`/app/settings?error=${encodeURIComponent('Fehler beim Erstellen der Schicht.')}`);
     }
 
-    revalidatePath('/admin/settings');
-    redirect('/admin/settings?success=Schicht erfolgreich erstellt.');
+    revalidatePath('/app/settings');
+    redirect('/app/settings?success=Schicht erfolgreich erstellt.');
 }
 
 export async function updateShiftTemplate(formData: FormData) {
@@ -67,7 +67,7 @@ export async function updateShiftTemplate(formData: FormData) {
     const end_time = formData.get('end_time') as string;
 
     if (!id || !label || !start_time || !end_time) {
-        return redirect('/admin/settings?error=Alle Felder sind erforderlich.');
+        return redirect('/app/settings?error=Alle Felder sind erforderlich.');
     }
 
     // Get user's station and verify admin
@@ -78,7 +78,7 @@ export async function updateShiftTemplate(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/settings?error=Keine Berechtigung.');
+        return redirect('/app/settings?error=Keine Berechtigung.');
     }
 
     // Update shift template
@@ -95,13 +95,13 @@ export async function updateShiftTemplate(formData: FormData) {
     if (error) {
         console.error('Error updating shift template:', error);
         if (error.code === '23505') { // Unique violation
-            return redirect(`/admin/settings?error=${encodeURIComponent('Eine Schicht mit diesem Namen existiert bereits.')}`);
+            return redirect(`/app/settings?error=${encodeURIComponent('Eine Schicht mit diesem Namen existiert bereits.')}`);
         }
-        return redirect(`/admin/settings?error=${encodeURIComponent('Fehler beim Aktualisieren der Schicht.')}`);
+        return redirect(`/app/settings?error=${encodeURIComponent('Fehler beim Aktualisieren der Schicht.')}`);
     }
 
-    revalidatePath('/admin/settings');
-    redirect('/admin/settings?success=Schicht erfolgreich aktualisiert.');
+    revalidatePath('/app/settings');
+    redirect('/app/settings?success=Schicht erfolgreich aktualisiert.');
 }
 
 export async function deleteShiftTemplate(formData: FormData) {
@@ -115,7 +115,7 @@ export async function deleteShiftTemplate(formData: FormData) {
     const id = formData.get('id') as string;
 
     if (!id) {
-        return redirect('/admin/settings?error=Schicht-ID fehlt.');
+        return redirect('/app/settings?error=Schicht-ID fehlt.');
     }
 
     // Get user's station and verify admin
@@ -126,7 +126,7 @@ export async function deleteShiftTemplate(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/settings?error=Keine Berechtigung.');
+        return redirect('/app/settings?error=Keine Berechtigung.');
     }
 
     // Delete shift template
@@ -138,11 +138,11 @@ export async function deleteShiftTemplate(formData: FormData) {
 
     if (error) {
         console.error('Error deleting shift template:', error);
-        return redirect(`/admin/settings?error=${encodeURIComponent('Fehler beim Löschen der Schicht.')}`);
+        return redirect(`/app/settings?error=${encodeURIComponent('Fehler beim Löschen der Schicht.')}`);
     }
 
-    revalidatePath('/admin/settings');
-    redirect('/admin/settings?success=Schicht erfolgreich gelöscht.');
+    revalidatePath('/app/settings');
+    redirect('/app/settings?success=Schicht erfolgreich gelöscht.');
 }
 
 export async function updateScheduleCycle(formData: FormData) {
@@ -158,7 +158,7 @@ export async function updateScheduleCycle(formData: FormData) {
     const division_ids = formData.getAll('division_ids') as string[];
 
     if (!start_date || !switch_hours || division_ids.length === 0) {
-        return redirect('/admin/settings?error=Alle Felder sind erforderlich.');
+        return redirect('/app/settings?error=Alle Felder sind erforderlich.');
     }
 
     // Get user's station and verify admin
@@ -169,7 +169,7 @@ export async function updateScheduleCycle(formData: FormData) {
         .single();
 
     if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/settings?error=Keine Berechtigung.');
+        return redirect('/app/settings?error=Keine Berechtigung.');
     }
 
     // Verify all division IDs belong to this station
@@ -180,7 +180,7 @@ export async function updateScheduleCycle(formData: FormData) {
         .in('id', division_ids);
 
     if (divError || !divisions || divisions.length !== division_ids.length) {
-        return redirect('/admin/settings?error=Ungültige Divisionen ausgewählt.');
+        return redirect('/app/settings?error=Ungültige Divisionen ausgewählt.');
     }
 
     // Check if cycle exists
@@ -220,9 +220,9 @@ export async function updateScheduleCycle(formData: FormData) {
 
     if (error) {
         console.error('Error updating schedule cycle:', error);
-        return redirect(`/admin/settings?error=${encodeURIComponent('Fehler beim Speichern des Zyklus.')}`);
+        return redirect(`/app/settings?error=${encodeURIComponent('Fehler beim Speichern des Zyklus.')}`);
     }
 
-    revalidatePath('/admin/settings');
-    redirect('/admin/settings?success=Schicht-Zyklus erfolgreich gespeichert.');
+    revalidatePath('/app/settings');
+    redirect('/app/settings?success=Schicht-Zyklus erfolgreich gespeichert.');
 }

@@ -38,10 +38,10 @@ export default function ShiftEditorPage({ params }: EditorPageProps) {
                 .from('shifts')
                 .select(`*, station:stations(name), division:divisions(name)`)
                 .eq('id', shiftId)
-                .single();
-            
+                .single<ShiftData>();
+
             if (shiftError || !shiftData) return console.error("Error fetching shift", shiftError);
-            setShift(shiftData as ShiftData);
+            setShift(shiftData);
 
             const { data: peopleData, error: peopleError } = await supabase
                 .from('people')
@@ -49,17 +49,18 @@ export default function ShiftEditorPage({ params }: EditorPageProps) {
                 .eq('station_id', shiftData.station_id);
 
             if (peopleError) return console.error("Error fetching people", peopleError);
-            setPeople(peopleData);
-            setPeopleMap(new Map(peopleData.map(p => [p.id, p])));
+            const people = (peopleData || []) as PersonData[];
+            setPeople(people);
+            setPeopleMap(new Map(people.map(p => [p.id, p])));
 
             const { data: vehicleData, error: vehicleError } = await supabase
                 .from('vehicle_configs')
                 .select('*')
                 .eq('station_id', shiftData.station_id)
                 .order('order', { ascending: true });
-            
+
             if (vehicleError) return console.error("Error fetching vehicles", vehicleError);
-            setVehicles(vehicleData);
+            setVehicles(vehicleData || []);
 
             const { data: assignmentData, error: assignmentError } = await supabase
                 .from('assignments')
@@ -69,9 +70,12 @@ export default function ShiftEditorPage({ params }: EditorPageProps) {
             if (assignmentError) return console.error("Error fetching assignments", assignmentError);
 
             const newAssignmentsMap: AssignmentsMap = new Map();
-            for (const a of assignmentData) {
-                const mapKey = `${a.vehicle_key}-${a.slot_key}`;
-                newAssignmentsMap.set(mapKey, a.people);
+            if (assignmentData) {
+                const typedAssignments = assignmentData as AssignmentData[];
+                for (const a of typedAssignments) {
+                    const mapKey = `${a.vehicle_key}-${a.slot_key}`;
+                    newAssignmentsMap.set(mapKey, a.people);
+                }
             }
             setAssignments(newAssignmentsMap);
         };

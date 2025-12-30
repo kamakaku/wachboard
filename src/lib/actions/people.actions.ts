@@ -35,7 +35,7 @@ export async function createPerson(formData: FormData) {
     const person_type = formData.get('person_type') as string | null;
 
     if (!name || name.trim() === '') {
-        return redirect('/admin/people?error=Name ist erforderlich.');
+        return redirect('/app/people?error=Name ist erforderlich.');
     }
 
     // Parse tags (comma-separated)
@@ -50,13 +50,13 @@ export async function createPerson(formData: FormData) {
         .eq('user_id', user.id)
         .single();
 
-    if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/people?error=Keine Berechtigung.');
+    if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
+        return redirect('/app/people?error=Keine Berechtigung.');
     }
 
     // Create person
     const resolvedPhotoUrl =
-        (await handlePhotoUpload(photo_file, membership.station_id, "/admin/people")) ??
+        (await handlePhotoUpload(photo_file, membership.station_id, "/app/people")) ??
         (photo_url ?? null);
 
     const { error } = await supabase
@@ -73,11 +73,11 @@ export async function createPerson(formData: FormData) {
 
     if (error) {
         console.error('Error creating person:', error);
-        return redirect(`/admin/people?error=${encodeURIComponent('Fehler beim Erstellen der Person.')}`);
+        return redirect(`/app/people?error=${encodeURIComponent('Fehler beim Erstellen der Person.')}`);
     }
 
-    revalidatePath('/admin/people');
-    redirect('/admin/people?success=Person erfolgreich hinzugefügt.');
+    revalidatePath('/app/people');
+    redirect('/app/people?success=Person erfolgreich hinzugefügt.');
 }
 
 export async function togglePersonActive(formData: FormData) {
@@ -92,7 +92,7 @@ export async function togglePersonActive(formData: FormData) {
     const currentStatus = formData.get('currentStatus') === 'true';
 
     if (!personId) {
-        return redirect('/admin/people?error=Person nicht gefunden.');
+        return redirect('/app/people?error=Person nicht gefunden.');
     }
 
     // Get user's station and verify admin
@@ -102,8 +102,8 @@ export async function togglePersonActive(formData: FormData) {
         .eq('user_id', user.id)
         .single();
 
-    if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/people?error=Keine Berechtigung.');
+    if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
+        return redirect('/app/people?error=Keine Berechtigung.');
     }
 
     // Verify person belongs to user's station
@@ -114,7 +114,7 @@ export async function togglePersonActive(formData: FormData) {
         .single();
 
     if (!person || person.station_id !== membership.station_id) {
-        return redirect('/admin/people?error=Person nicht gefunden.');
+        return redirect('/app/people?error=Person nicht gefunden.');
     }
 
     // Toggle active status
@@ -125,11 +125,11 @@ export async function togglePersonActive(formData: FormData) {
 
     if (error) {
         console.error('Error updating person:', error);
-        return redirect(`/admin/people?error=${encodeURIComponent('Fehler beim Aktualisieren der Person.')}`);
+        return redirect(`/app/people?error=${encodeURIComponent('Fehler beim Aktualisieren der Person.')}`);
     }
 
-    revalidatePath('/admin/people');
-    redirect('/admin/people?success=Status erfolgreich geändert.');
+    revalidatePath('/app/people');
+    redirect('/app/people?success=Status erfolgreich geändert.');
 }
 
 export async function deletePerson(formData: FormData) {
@@ -143,7 +143,7 @@ export async function deletePerson(formData: FormData) {
     const personId = formData.get('personId') as string;
 
     if (!personId) {
-        return redirect('/admin/people?error=Person nicht gefunden.');
+        return redirect('/app/people?error=Person nicht gefunden.');
     }
 
     // Get user's station and verify admin
@@ -153,8 +153,8 @@ export async function deletePerson(formData: FormData) {
         .eq('user_id', user.id)
         .single();
 
-    if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/people?error=Keine Berechtigung.');
+    if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
+        return redirect('/app/people?error=Keine Berechtigung.');
     }
 
     // Verify person belongs to user's station
@@ -165,7 +165,7 @@ export async function deletePerson(formData: FormData) {
         .single();
 
     if (!person || person.station_id !== membership.station_id) {
-        return redirect('/admin/people?error=Person nicht gefunden.');
+        return redirect('/app/people?error=Person nicht gefunden.');
     }
 
     // Delete person
@@ -176,11 +176,11 @@ export async function deletePerson(formData: FormData) {
 
     if (error) {
         console.error('Error deleting person:', error);
-        return redirect(`/admin/people?error=${encodeURIComponent('Fehler beim Löschen der Person.')}`);
+        return redirect(`/app/people?error=${encodeURIComponent('Fehler beim Löschen der Person.')}`);
     }
 
-    revalidatePath('/admin/people');
-    redirect('/admin/people?success=Person erfolgreich gelöscht.');
+    revalidatePath('/app/people');
+    redirect('/app/people?success=Person erfolgreich gelöscht.');
 }
 
 export async function updatePerson(formData: FormData) {
@@ -199,7 +199,7 @@ export async function updatePerson(formData: FormData) {
     const photo_file = formData.get("photo_file") as File | null;
 
     if (!personId || name === "") {
-        return redirect('/admin/people?error=Name ist erforderlich.');
+        return redirect('/app/people?error=Name ist erforderlich.');
     }
 
     const tags = tagsString
@@ -212,8 +212,8 @@ export async function updatePerson(formData: FormData) {
         .eq('user_id', user.id)
         .single();
 
-    if (!membership || membership.role !== 'ADMIN') {
-        return redirect('/admin/people?error=Keine Berechtigung.');
+    if (!membership || !['ADMIN', 'EDITOR'].includes(membership.role)) {
+        return redirect('/app/people?error=Keine Berechtigung.');
     }
 
     const { data: person } = await supabase
@@ -223,11 +223,11 @@ export async function updatePerson(formData: FormData) {
         .single();
 
     if (!person || person.station_id !== membership.station_id) {
-        return redirect('/admin/people?error=Person nicht gefunden.');
+        return redirect('/app/people?error=Person nicht gefunden.');
     }
 
     const resolvedPhotoUrl =
-        (await handlePhotoUpload(photo_file, membership.station_id, "/admin/people")) ??
+        (await handlePhotoUpload(photo_file, membership.station_id, "/app/people")) ??
         (photo_url ?? null);
 
     const { error } = await supabase
@@ -242,9 +242,9 @@ export async function updatePerson(formData: FormData) {
 
     if (error) {
         console.error('Error updating person:', error);
-        return redirect(`/admin/people?error=${encodeURIComponent('Fehler beim Aktualisieren der Person.')}`);
+        return redirect(`/app/people?error=${encodeURIComponent('Fehler beim Aktualisieren der Person.')}`);
     }
 
-    revalidatePath('/admin/people');
-    redirect('/admin/people?success=Person erfolgreich aktualisiert.');
+    revalidatePath('/app/people');
+    redirect('/app/people?success=Person erfolgreich aktualisiert.');
 }
